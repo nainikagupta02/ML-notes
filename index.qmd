@@ -4,6 +4,8 @@ subtitle: "a notebook by nainika gupta"
 toc: false
 ---
 
+feb 2025 – dec 2025
+
 this is where i’m collecting my machine learning notes, from foundational ideas to models and practical comparisons.
 
 the notes are being added gradually. start with [feature engineering](notes/training-evaluation/feature-engineering.qmd) or [curse of dimensionality](notes/foundations/curse-of-dimensionality.qmd), or browse the topics below.
