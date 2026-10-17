@@ -5,7 +5,7 @@ toc: false
 
 learning from labelled data for regression and classification.
 
-these topics are planned; each page is ready to be filled in.
+the supervised learning overview is available below; individual model notes are still being written.
 
 ::: {.topic-index}
 

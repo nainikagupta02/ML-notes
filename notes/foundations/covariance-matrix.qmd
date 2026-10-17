@@ -60,6 +60,10 @@ include-in-header:
 - factor analysis: covariance is explained through shared factors and feature-specific noise.
 - kalman filters: covariance tracks uncertainty as predictions and measurements are combined.
 
+## image credit
+
+- the covariance diagrams were made using claude.
+
 ## references
 
 - [numpy: covariance estimation](https://numpy.org/doc/stable/reference/generated/numpy.cov.html).

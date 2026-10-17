@@ -14,7 +14,7 @@ personal machine learning study notes by [nainika gupta](https://nainikagupta02.
 - dimensionality reduction
 - comparisons
 
-feature engineering, curse of dimensionality, gradient descent, and covariance matrix have been added as concise notes adapted from my study pages. the remaining topics are placeholders.
+feature engineering, curse of dimensionality, gradient descent, covariance matrix, residuals & the bias–variance tradeoff, and the supervised learning overview have been added as concise notes adapted from my study pages. the remaining topics are placeholders.
 
 ## fill in a note
 

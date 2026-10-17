@@ -2,24 +2,53 @@
 title: "supervised learning overview"
 ---
 
-[not yet written]{.note-status}
+## the idea
 
-## intuition
+- learn a mapping from features $x$ to known targets $y$, then predict outcomes for new observations.
+- regression predicts numeric values; classification predicts categories or class probabilities.
+- success means useful performance on unseen data, rather than simply fitting the training examples.
 
-[notes to come.]{.note-placeholder}
+::: {.table-responsive tabindex="0"}
 
-## maths
+| task | target | example |
+|---|---|---|
+| regression | a numeric value | next-year healthcare spending |
+| classification | a category | disease subtype |
 
-[equations and explanations to come.]{.note-placeholder}
+:::
 
-## example
+## model families
 
-[a worked example, figure, or code snippet to come.]{.note-placeholder}
+::: {.table-responsive tabindex="0"}
 
-## practical considerations
+| family | core idea | useful starting point / consideration |
+|---|---|---|
+| linear models | weighted combinations of features; ridge and lasso add penalties | fast, interpretable baselines; limited without suitable feature transformations |
+| trees & ensembles | split feature space into regions; forests average randomised trees, while boosting adds sequential corrections | flexible models for tabular data; tune complexity to control overfitting |
+| support vector machines | find a margin-based decision boundary; kernels allow nonlinear relationships | useful for some small or medium high-dimensional datasets; scaling and kernel choice matter |
+| k-nearest neighbours | predict from nearby training observations | simple baseline; sensitive to scaling, dimensionality, and prediction-time cost |
+| naive bayes | combine class probabilities with conditional feature-independence assumptions | efficient for suitable text or count data; probability estimates may need calibration |
+| neural networks | learn layered nonlinear representations | useful for complex inputs such as images and sequences; architecture, data, and compute matter |
+| gaussian processes | place a distribution over functions using a kernel | predictive uncertainty under model assumptions; standard methods can be costly as sample size grows |
 
-[assumptions, evaluation, and common pitfalls to come.]{.note-placeholder}
+:::
+
+## a practical workflow
+
+- define the target, prediction time, and metric before choosing a model.
+- split data to reflect deployment: keep repeated observations from the same person together and respect time order when needed.
+- fit [feature engineering](../training-evaluation/feature-engineering.qmd) within training folds to avoid leakage.
+- establish a simple baseline, compare candidates with cross-validation, and tune hyperparameters on training/validation data.
+- evaluate the chosen pipeline once on an untouched test set; inspect errors, calibration when relevant, and performance across important groups.
+
+## choosing a starting point
+
+- there is no universally best model; compare against a baseline using the same splits and metrics.
+- match the loss and evaluation metric to the task and class balance.
+- use the [bias–variance notes](../training-evaluation/bias-variance.qmd) to think about underfitting and overfitting.
+- explore [linear regression](linear-regression.qmd), [logistic regression](logistic-regression.qmd), or [trees & ensembles](../trees-ensembles/index.qmd) next; individual topic pages are being filled in.
 
 ## references
 
-[sources to come.]{.note-placeholder}
+- [scikit-learn: supervised learning](https://scikit-learn.org/stable/supervised_learning.html).
+- [scikit-learn: model selection and evaluation](https://scikit-learn.org/stable/model_selection.html).
