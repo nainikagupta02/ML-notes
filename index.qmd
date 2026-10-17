@@ -1,12 +1,11 @@
 ---
 title: "machine learning notes"
-subtitle: "a notebook by nainika gupta"
 toc: false
 ---
 
-this is where i’m collecting my machine learning notes, from foundational ideas to models and practical comparisons.
+this is where i’m collecting my machine learning notes.
 
-the notes are being added gradually. start with [feature engineering](notes/training-evaluation/feature-engineering.qmd) or [curse of dimensionality](notes/foundations/curse-of-dimensionality.qmd), or browse the topics below.
+start with [foundations](notes/foundations/index.qmd), then [training & evaluation](notes/training-evaluation/index.qmd) before exploring individual models.
 
 ::: {.topic-grid}
 
@@ -48,10 +47,3 @@ representing high-dimensional data in fewer dimensions.
 
 :::
 
-## not sure where to begin?
-
-start with the [machine learning overview](notes/foundations/overview.qmd), then work through [training & evaluation](notes/training-evaluation/index.qmd) before exploring individual models.
-
-if two methods sound similar, try a comparison: [k-means vs knn](notes/comparisons/k-means-vs-knn.qmd).
-
-these are personal study notes, not a complete course. content and references will be added as each topic is developed.
