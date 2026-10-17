@@ -5,7 +5,7 @@ toc: false
 
 how models learn, generalise, and get evaluated.
 
-feature engineering is available below; the other topics are still being written.
+feature engineering and gradient descent are available below; the other topics are still being written.
 
 ::: {.topic-index}
 

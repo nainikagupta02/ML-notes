@@ -5,7 +5,7 @@ toc: false
 
 the basic ideas and mathematical building blocks.
 
-curse of dimensionality is available below; the other topics are still being written.
+covariance matrix and curse of dimensionality are available below; the overview is still being written.
 
 ::: {.topic-index}
 
