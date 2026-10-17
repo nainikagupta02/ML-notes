@@ -17,6 +17,6 @@ h2 { font-size: 1.35rem; font-weight: 600; }
 .topic-card a { text-decoration: none; }
 .topic-card:hover { border-color: #8eafba; }
 .topic-index li { padding: .2rem 0; }
-.placeholder { color: #7b838b; font-size: .92rem; }
+.note-placeholder { color: #7b838b; font-size: .92rem; }
 #quarto-margin-sidebar { font-size: .85rem; }
 @media (max-width: 600px) { .topic-grid { grid-template-columns: 1fr; } h1 { font-size: 1.75rem; } }

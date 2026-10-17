@@ -6,22 +6,22 @@ title: "k-means vs knn"
 
 ## the main difference
 
-[comparison to come.]{.placeholder}
+[comparison to come.]{.note-placeholder}
 
 ## side by side
 
-[goals, inputs, outputs, and assumptions to come.]{.placeholder}
+[goals, inputs, outputs, and assumptions to come.]{.note-placeholder}
 
 ## worked example
 
-[example to come.]{.placeholder}
+[example to come.]{.note-placeholder}
 
 ## when to use each
 
-[practical guidance to come.]{.placeholder}
+[practical guidance to come.]{.note-placeholder}
 
 ## references
 
-[sources to come.]{.placeholder}
+[sources to come.]{.note-placeholder}
 
 related: [k-means](../clustering/k-means.qmd) and [k-nearest neighbours](../supervised-learning/nearest-neighbours.qmd).

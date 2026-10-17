@@ -6,20 +6,20 @@ title: "unsupervised learning overview"
 
 ## intuition
 
-[notes to come.]{.placeholder}
+[notes to come.]{.note-placeholder}
 
 ## maths
 
-[equations and explanations to come.]{.placeholder}
+[equations and explanations to come.]{.note-placeholder}
 
 ## example
 
-[a worked example, figure, or code snippet to come.]{.placeholder}
+[a worked example, figure, or code snippet to come.]{.note-placeholder}
 
 ## practical considerations
 
-[assumptions, evaluation, and common pitfalls to come.]{.placeholder}
+[assumptions, evaluation, and common pitfalls to come.]{.note-placeholder}
 
 ## references
 
-[sources to come.]{.placeholder}
+[sources to come.]{.note-placeholder}
