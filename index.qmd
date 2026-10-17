@@ -6,7 +6,7 @@ toc: false
 
 this is where i’m collecting my machine learning notes, from foundational ideas to models and practical comparisons.
 
-the structure is in place; the notes are still being written. choose a topic below or use the sidebar to explore.
+the notes are being added gradually. start with [feature engineering](notes/training-evaluation/feature-engineering.qmd) or [curse of dimensionality](notes/foundations/curse-of-dimensionality.qmd), or browse the topics below.
 
 ::: {.topic-grid}
 

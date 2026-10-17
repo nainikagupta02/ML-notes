@@ -14,7 +14,7 @@ personal machine learning study notes by [nainika gupta](https://nainikagupta02.
 - dimensionality reduction
 - comparisons
 
-all topic pages are currently placeholders. no notion content has been imported.
+feature engineering and curse of dimensionality have been added as concise notes adapted from my study pages. the remaining topics are placeholders.
 
 ## fill in a note
 

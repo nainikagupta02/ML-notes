@@ -5,7 +5,7 @@ toc: false
 
 the basic ideas and mathematical building blocks.
 
-these topics are planned; each page is ready to be filled in.
+curse of dimensionality is available below; the other topics are still being written.
 
 ::: {.topic-index}
 

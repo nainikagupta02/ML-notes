@@ -38,6 +38,8 @@ website:
         contents:
           - href: notes/training-evaluation/preprocessing.qmd
             text: "preprocessing"
+          - href: notes/training-evaluation/feature-engineering.qmd
+            text: "feature engineering"
           - href: notes/training-evaluation/train-test.qmd
             text: "train/test splits"
           - href: notes/training-evaluation/loss-functions.qmd

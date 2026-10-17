@@ -2,24 +2,32 @@
 title: "curse of dimensionality"
 ---
 
-[not yet written]{.note-status}
+## samples, features & dimensions
 
-## intuition
+- samples are rows: individual observations, such as patients.
+- features are columns: measurements describing each observation.
+- dimensions are feature axes; a dataset with $n$ samples and $d$ features has shape $(n,d)$.
+- high-dimensional data has many features; this is different from simply having many samples.
 
-[notes to come.]{.note-placeholder}
+## why more dimensions can be difficult
 
-## maths
+- **sparsity:** maintaining a fixed resolution requires rapidly more data. ten bins per axis create $10^d$ cells: ten in one dimension, but ten billion in ten dimensions.
+- **distance concentration:** with many similarly scaled, weakly dependent features, nearest and farthest distances can become less distinct. this depends on the data distribution and distance metric.
+- **boundary concentration:** for points uniformly distributed in a unit ball, the fraction within the outer 10% of its radius is $1-0.9^d$: about 65% at $d=10$ and 99.997% at $d=100$.
 
-[equations and explanations to come.]{.note-placeholder}
+## why it matters
 
-## example
+- knn, k-means, and dbscan can struggle when distances no longer distinguish useful neighbours or clusters.
+- irrelevant features can obscure signal, increase computation, and encourage overfitting when samples are limited.
+- linear models, kernel methods, and neural networks are not automatically immune; assumptions, regularisation, and sample size still matter.
 
-[a worked example, figure, or code snippet to come.]{.note-placeholder}
+## what helps
 
-## practical considerations
-
-[assumptions, evaluation, and common pitfalls to come.]{.note-placeholder}
+- remove irrelevant or redundant features using [feature selection](../training-evaluation/feature-engineering.qmd#feature-selection-extraction).
+- consider [dimensionality reduction](../dimensionality-reduction/index.qmd) while checking that useful structure is retained.
+- regularise supervised models and evaluate choices on held-out data.
+- fit learned transformations within training folds to avoid leakage.
 
 ## references
 
-[sources to come.]{.note-placeholder}
+- [scikit-learn: nearest neighbours and high-dimensional data](https://scikit-learn.org/stable/modules/neighbors.html).
