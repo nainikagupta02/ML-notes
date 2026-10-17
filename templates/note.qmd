@@ -1,0 +1,15 @@
+---
+title: "topic name"
+---
+
+[not yet written]{.note-status}
+
+## intuition
+
+## maths
+
+## example
+
+## practical considerations
+
+## references

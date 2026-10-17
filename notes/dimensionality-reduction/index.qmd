@@ -1,0 +1,17 @@
+---
+title: "dimensionality reduction"
+toc: false
+---
+
+representing high-dimensional data in fewer dimensions.
+
+these topics are planned; each page is ready to be filled in.
+
+::: {.topic-index}
+
+- [singular value decomposition](svd.qmd)
+- [principal component analysis](pca.qmd)
+- [t-sne](t-sne.qmd)
+- [umap](umap.qmd)
+
+:::

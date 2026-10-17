@@ -1,0 +1,19 @@
+---
+title: "training & evaluation"
+toc: false
+---
+
+how models learn, generalise, and get evaluated.
+
+these topics are planned; each page is ready to be filled in.
+
+::: {.topic-index}
+
+- [preprocessing](preprocessing.qmd)
+- [train/test splits](train-test.qmd)
+- [loss functions](loss-functions.qmd)
+- [gradient descent](gradient-descent.qmd)
+- [regularisation](regularisation.qmd)
+- [residuals & the bias–variance tradeoff](bias-variance.qmd)
+
+:::

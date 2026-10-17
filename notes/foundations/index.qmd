@@ -1,0 +1,16 @@
+---
+title: "foundations"
+toc: false
+---
+
+the basic ideas and mathematical building blocks.
+
+these topics are planned; each page is ready to be filled in.
+
+::: {.topic-index}
+
+- [machine learning overview](overview.qmd)
+- [covariance matrix](covariance-matrix.qmd)
+- [curse of dimensionality](curse-of-dimensionality.qmd)
+
+:::

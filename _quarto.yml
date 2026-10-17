@@ -1,0 +1,133 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - "*.qmd"
+    - "notes/**/*.qmd"
+    - "!templates/**"
+
+website:
+  title: "ml notes"
+  description: "a growing collection of machine learning notes by nainika gupta."
+  site-url: "https://nainikagupta02.github.io/ML-notes/"
+  repo-url: "https://github.com/nainikagupta02/ML-notes"
+  repo-actions: [edit]
+  page-navigation: true
+  back-to-top-navigation: true
+  bread-crumbs: false
+  search:
+    location: sidebar
+    type: textbox
+  sidebar:
+    style: docked
+    collapse-level: 1
+    contents:
+      - href: index.qmd
+        text: start here
+      - section: "foundations"
+        href: notes/foundations/index.qmd
+        contents:
+          - href: notes/foundations/overview.qmd
+            text: "machine learning overview"
+          - href: notes/foundations/covariance-matrix.qmd
+            text: "covariance matrix"
+          - href: notes/foundations/curse-of-dimensionality.qmd
+            text: "curse of dimensionality"
+      - section: "training & evaluation"
+        href: notes/training-evaluation/index.qmd
+        contents:
+          - href: notes/training-evaluation/preprocessing.qmd
+            text: "preprocessing"
+          - href: notes/training-evaluation/train-test.qmd
+            text: "train/test splits"
+          - href: notes/training-evaluation/loss-functions.qmd
+            text: "loss functions"
+          - href: notes/training-evaluation/gradient-descent.qmd
+            text: "gradient descent"
+          - href: notes/training-evaluation/regularisation.qmd
+            text: "regularisation"
+          - href: notes/training-evaluation/bias-variance.qmd
+            text: "residuals & the bias–variance tradeoff"
+      - section: "supervised learning"
+        href: notes/supervised-learning/index.qmd
+        contents:
+          - href: notes/supervised-learning/overview.qmd
+            text: "supervised learning overview"
+          - href: notes/supervised-learning/linear-regression.qmd
+            text: "linear regression"
+          - href: notes/supervised-learning/logistic-regression.qmd
+            text: "logistic regression"
+          - href: notes/supervised-learning/generalised-linear-models.qmd
+            text: "generalised linear models"
+          - href: notes/supervised-learning/support-vector-machines.qmd
+            text: "support vector machines"
+          - href: notes/supervised-learning/nearest-neighbours.qmd
+            text: "k-nearest neighbours"
+          - href: notes/supervised-learning/naive-bayes.qmd
+            text: "naive bayes"
+      - section: "trees & ensembles"
+        href: notes/trees-ensembles/index.qmd
+        contents:
+          - href: notes/trees-ensembles/overview.qmd
+            text: "trees overview"
+          - href: notes/trees-ensembles/decision-trees.qmd
+            text: "decision trees"
+          - href: notes/trees-ensembles/random-forests.qmd
+            text: "random forests"
+          - href: notes/trees-ensembles/gradient-boosting.qmd
+            text: "gradient boosting"
+      - section: "clustering"
+        href: notes/clustering/index.qmd
+        contents:
+          - href: notes/clustering/overview.qmd
+            text: "unsupervised learning overview"
+          - href: notes/clustering/k-means.qmd
+            text: "k-means"
+          - href: notes/clustering/dbscan.qmd
+            text: "dbscan"
+      - section: "dimensionality reduction"
+        href: notes/dimensionality-reduction/index.qmd
+        contents:
+          - href: notes/dimensionality-reduction/svd.qmd
+            text: "singular value decomposition"
+          - href: notes/dimensionality-reduction/pca.qmd
+            text: "principal component analysis"
+          - href: notes/dimensionality-reduction/t-sne.qmd
+            text: "t-sne"
+          - href: notes/dimensionality-reduction/umap.qmd
+            text: "umap"
+      - section: comparisons
+        contents:
+          - href: notes/comparisons/k-means-vs-knn.qmd
+            text: k-means vs knn
+    tools:
+      - icon: house
+        href: https://nainikagupta02.github.io/
+        text: personal website
+      - icon: github
+        href: https://github.com/nainikagupta02/ML-notes
+        text: source repository
+  page-footer:
+    left: "notes by nainika gupta"
+    right:
+      - text: personal website
+        href: https://nainikagupta02.github.io/
+      - text: source
+        href: https://github.com/nainikagupta02/ML-notes
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    toc-title: on this page
+    toc-depth: 2
+    number-sections: false
+    code-copy: true
+    code-overflow: wrap
+    html-math-method: mathjax
+    lang: en
+
+language: _language.yml
+execute:
+  enabled: false

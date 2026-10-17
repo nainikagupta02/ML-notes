@@ -1,0 +1,20 @@
+---
+title: "supervised learning"
+toc: false
+---
+
+learning from labelled data for regression and classification.
+
+these topics are planned; each page is ready to be filled in.
+
+::: {.topic-index}
+
+- [supervised learning overview](overview.qmd)
+- [linear regression](linear-regression.qmd)
+- [logistic regression](logistic-regression.qmd)
+- [generalised linear models](generalised-linear-models.qmd)
+- [support vector machines](support-vector-machines.qmd)
+- [k-nearest neighbours](nearest-neighbours.qmd)
+- [naive bayes](naive-bayes.qmd)
+
+:::

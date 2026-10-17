@@ -1,0 +1,17 @@
+---
+title: "trees & ensembles"
+toc: false
+---
+
+decision trees and methods that combine them.
+
+these topics are planned; each page is ready to be filled in.
+
+::: {.topic-index}
+
+- [trees overview](overview.qmd)
+- [decision trees](decision-trees.qmd)
+- [random forests](random-forests.qmd)
+- [gradient boosting](gradient-boosting.qmd)
+
+:::

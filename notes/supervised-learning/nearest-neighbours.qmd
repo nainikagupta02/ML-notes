@@ -1,0 +1,27 @@
+---
+title: "k-nearest neighbours"
+---
+
+[not yet written]{.note-status}
+
+## intuition
+
+[notes to come.]{.placeholder}
+
+## maths
+
+[equations and explanations to come.]{.placeholder}
+
+## example
+
+[a worked example, figure, or code snippet to come.]{.placeholder}
+
+## practical considerations
+
+[assumptions, evaluation, and common pitfalls to come.]{.placeholder}
+
+## references
+
+[sources to come.]{.placeholder}
+
+related: [k-means vs knn](../comparisons/k-means-vs-knn.qmd).

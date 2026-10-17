@@ -1,0 +1,57 @@
+---
+title: "machine learning notes"
+subtitle: "a notebook by nainika gupta"
+toc: false
+---
+
+this is where i’m collecting my machine learning notes, from foundational ideas to models and practical comparisons.
+
+the structure is in place; the notes are still being written. choose a topic below or use the sidebar to explore.
+
+::: {.topic-grid}
+
+::: {.topic-card}
+## [foundations](notes/foundations/index.qmd)
+
+the basic ideas and mathematical building blocks.
+:::
+
+::: {.topic-card}
+## [training & evaluation](notes/training-evaluation/index.qmd)
+
+how models learn, generalise, and get evaluated.
+:::
+
+::: {.topic-card}
+## [supervised learning](notes/supervised-learning/index.qmd)
+
+learning from labelled data for regression and classification.
+:::
+
+::: {.topic-card}
+## [trees & ensembles](notes/trees-ensembles/index.qmd)
+
+decision trees and methods that combine them.
+:::
+
+::: {.topic-card}
+## [clustering](notes/clustering/index.qmd)
+
+finding groups and structure in unlabelled data.
+:::
+
+::: {.topic-card}
+## [dimensionality reduction](notes/dimensionality-reduction/index.qmd)
+
+representing high-dimensional data in fewer dimensions.
+:::
+
+:::
+
+## not sure where to begin?
+
+start with the [machine learning overview](notes/foundations/overview.qmd), then work through [training & evaluation](notes/training-evaluation/index.qmd) before exploring individual models.
+
+if two methods sound similar, try a comparison: [k-means vs knn](notes/comparisons/k-means-vs-knn.qmd).
+
+these are personal study notes, not a complete course. content and references will be added as each topic is developed.

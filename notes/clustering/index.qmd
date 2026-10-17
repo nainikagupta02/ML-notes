@@ -1,0 +1,16 @@
+---
+title: "clustering"
+toc: false
+---
+
+finding groups and structure in unlabelled data.
+
+these topics are planned; each page is ready to be filled in.
+
+::: {.topic-index}
+
+- [unsupervised learning overview](overview.qmd)
+- [k-means](k-means.qmd)
+- [dbscan](dbscan.qmd)
+
+:::

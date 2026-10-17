@@ -1,11 +1,5 @@
-# Notes index
+# notes
 
-No notes have been published yet.
+[read the notebook online](https://nainikagupta02.github.io/ML-notes/).
 
-Planned topics include:
-
-- Foundations: preprocessing, train/test splits, loss, regularisation, bias and variance.
-- Supervised learning: linear and logistic regression, trees, SVMs, and nearest neighbours.
-- Unsupervised learning: clustering and dimensionality reduction.
-
-As notes are added, replace these topic descriptions with links to their files.
+topic source files are organised by section in this folder. each `.qmd` file becomes a readable web page when the site builds.

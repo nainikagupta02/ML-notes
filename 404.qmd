@@ -1,0 +1,7 @@
+---
+title: "page not found"
+search: false
+toc: false
+---
+
+this page may have moved. [return to the notes index](index.qmd).
