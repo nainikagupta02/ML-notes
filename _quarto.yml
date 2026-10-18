@@ -31,6 +31,10 @@ website:
             text: "machine learning overview"
           - href: notes/foundations/probability-basics.qmd
             text: "probability basics"
+          - href: notes/foundations/pac-learning.qmd
+            text: "pac learning"
+          - href: notes/foundations/occams-razor.qmd
+            text: "occam's razor in ml"
           - href: notes/foundations/eigenvalues-eigenvectors.qmd
             text: "eigenvalues & eigenvectors"
           - href: notes/foundations/covariance-matrix.qmd

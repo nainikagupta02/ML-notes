@@ -5,12 +5,14 @@ toc: false
 
 the basic ideas and mathematical building blocks.
 
-probability basics, eigenvalues & eigenvectors, covariance matrix, distance metrics, and curse of dimensionality are available below; the overview is still being written.
+probability basics, pac learning, occam's razor in ml, eigenvalues & eigenvectors, covariance matrix, distance metrics, and curse of dimensionality are available below; the overview is still being written.
 
 ::: {.topic-index}
 
 - [machine learning overview](overview.qmd)
 - [probability basics](probability-basics.qmd)
+- [pac learning](pac-learning.qmd)
+- [occam's razor in ml](occams-razor.qmd)
 - [eigenvalues & eigenvectors](eigenvalues-eigenvectors.qmd)
 - [covariance matrix](covariance-matrix.qmd)
 - [distance metrics](distance-metrics.qmd)

@@ -1,0 +1,33 @@
+---
+title: "occam's razor in ml"
+---
+
+## the principle
+
+- among hypotheses that explain the data about equally well, prefer the simplest one
+- originally a philosophical heuristic (attributed to william of ockham), adopted in ml as a practical guide for choosing between models that fit the training data comparably
+- "simplest" in ml usually means fewest parameters, lowest-degree polynomial, shallowest tree, fewest nonzero coefficients, or smallest hypothesis class — not simplest to explain in words
+
+## why simpler is favoured in ml
+
+- **sample complexity**: in [pac learning](pac-learning.qmd#sample-complexity), the number of examples needed to generalise reliably grows with the complexity of the hypothesis class ($\ln\lvert\mathcal{h}\rvert$, or vc dimension for infinite classes) — a simpler class needs less data to guarantee low error at the same confidence level, which is a formal reason simpler models generalise better from limited data
+- **minimum description length (mdl)**: formalises occam's razor information-theoretically — prefer the hypothesis $h$ minimising $l(h)+l(d\mid h)$, the number of bits to describe the hypothesis plus the number of bits to describe the data given that hypothesis; a model that fits the training data perfectly but takes many bits to describe (e.g. memorising every point) is penalised against a simpler model with slightly higher error
+- **information criteria** (aic, bic) apply the same idea to model comparison: both subtract a term proportional to the number of parameters from a measure of fit, explicitly trading off fit against complexity rather than picking whichever model fits training data best
+
+## where it shows up
+
+- [regularisation](../training-evaluation/regularisation.qmd) directly implements occam's razor: penalising large weights (or nonzero weights, for l1) is a concrete way of preferring the simplest model consistent with the data
+- feature selection seeks the smallest sufficient set of features rather than using every available one — see [feature selection & extraction](../training-evaluation/feature-engineering.qmd#feature-selection--extraction)
+- model selection: preferring a lower polynomial degree, a shallower tree, or fewer hidden units when accuracy is comparable across choices
+- [baseline models](../training-evaluation/baseline-models.qmd) are the extreme version of this — always check whether a trivially simple model does almost as well before justifying something complex
+
+## practical considerations
+
+- occam's razor is a bias, not a law — it helps most when the true underlying relationship actually is simple, or close to it; forcing an overly simple model onto a genuinely complex relationship underfits, see [residuals & the bias–variance tradeoff](../training-evaluation/bias-variance.qmd)
+- "simplest that fits" should be judged relative to how much data is available — a more complex model isn't wrong, just riskier without enough data to support it
+- treat it as a heuristic to generate candidates, not a substitute for evaluation: use [cross-validation](../training-evaluation/train-test.qmd#cross-validation) or [learning curves](../training-evaluation/learning-curves.qmd) to check empirically whether the simpler model actually generalises better, rather than assuming it does
+
+## references
+
+- [wikipedia: occam's razor](https://en.wikipedia.org/wiki/Occam%27s_razor)
+- [wikipedia: minimum description length](https://en.wikipedia.org/wiki/Minimum_description_length)

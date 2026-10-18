@@ -1,0 +1,38 @@
+---
+title: "pac learning"
+---
+
+## what "learning" means here
+
+- pac stands for probably approximately correct — a framework (valiant, 1984) for formalising what it means for an algorithm to "learn" from examples, rather than just fitting them
+- setup: examples are drawn independently from some unknown, fixed distribution $d$; a learning algorithm sees a batch of labelled training examples and must output a hypothesis $h$, from a hypothesis class $h\in\mathcal{h}$, that performs well on *new* examples from the same distribution — not just the training set
+- this is the standard **batch learning** setting: all training data is available up front before any hypothesis is produced, as opposed to online learning, where data arrives one example at a time and the hypothesis updates as it goes
+
+## the pac guarantee
+
+- a hypothesis class $\mathcal{h}$ is pac-learnable if there's an algorithm that, for any distribution $d$, any target concept, and any choice of $\epsilon>0$ and $\delta>0$, outputs a hypothesis $h$ satisfying $P\big(\text{error}(h)\leq\epsilon\big)\geq 1-\delta$, using a number of training examples that grows only polynomially in $1/\epsilon$, $1/\delta$, and the complexity of $\mathcal{h}$
+- **probably**: the guarantee holds with probability at least $1-\delta$ over the random draw of the training sample — a small chance $\delta$ of an unlucky, unrepresentative sample is allowed
+- **approximately correct**: the learned hypothesis is only required to have error at most $\epsilon$, not zero error — some small residual error is allowed
+- $\epsilon$ and $\delta$ trade off against sample size: demanding lower error or higher confidence requires more data
+
+## sample complexity
+
+- for a finite hypothesis class $\mathcal{h}$, in the realisable case (the true concept is actually in $\mathcal{h}$), a sample size of $m\geq\dfrac{1}{\epsilon}\Big(\ln\lvert\mathcal{h}\rvert+\ln\dfrac{1}{\delta}\Big)$ is enough to pac-learn
+- a larger, more expressive hypothesis class has larger $\lvert\mathcal{h}\rvert$ (or, for infinite classes, a larger vc dimension) and so needs more data to guarantee the same error and confidence — complexity of the hypothesis class and sample size required are directly linked
+- for infinite hypothesis classes (e.g. linear classifiers), $\ln\lvert\mathcal{h}\rvert$ is replaced by the vc dimension of $\mathcal{h}$, a measure of how many points the class can shatter (classify in every possible way); sample complexity scales roughly as $m=O\big((\text{vc-dim}(\mathcal{h})+\ln(1/\delta))/\epsilon\big)$
+
+## agnostic pac learning
+
+- the basic model assumes the true concept is exactly representable in $\mathcal{h}$ — rarely true in practice
+- agnostic pac learning drops that assumption: the goal becomes finding $h\in\mathcal{h}$ whose error is close to the best achievable *within* $\mathcal{h}$, rather than driving error to zero — this matches real modelling, where the "true" relationship is rarely exactly linear, exactly a decision tree, etc.
+
+## practical considerations
+
+- pac sample-complexity bounds are usually far looser than what works in practice — their value is conceptual: they formalise *why* restricting model complexity (fewer features, lower-degree polynomials, regularisation) reduces the data needed to generalise reliably, which is the same intuition behind [the bias–variance tradeoff](../training-evaluation/bias-variance.qmd)
+- pac theory is the formal backing for [occam's razor in ml](occams-razor.qmd) — a smaller or lower-vc-dimension hypothesis class is provably easier to learn from limited data
+- [regularisation](../training-evaluation/regularisation.qmd) can be read as effectively shrinking the hypothesis class being searched, which is exactly the lever pac sample-complexity bounds depend on
+
+## references
+
+- [wikipedia: probably approximately correct learning](https://en.wikipedia.org/wiki/Probably_approximately_correct_learning)
+- [stanford cs229: learning theory notes](https://cs229.stanford.edu/notes2020spring/cs229-notes4.pdf)
