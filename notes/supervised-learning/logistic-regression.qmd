@@ -2,24 +2,40 @@
 title: "logistic regression"
 ---
 
-[not yet written]{.note-status}
-
 ## intuition
 
-[notes to come.]{.note-placeholder}
+- logistic regression predicts a binary outcome (0/1, disease/no disease) — linear regression predicts any real number, which isn't suitable for a probability that must stay in $[0,1]$
+- the fix: compute the same linear combination of features as linear regression, then squash it into $[0,1]$ with the sigmoid function, so the output can be read as $P(y=1\mid x)$
 
-## maths
+![a linear model's output is unbounded; the sigmoid squashes the same linear score into a valid probability in [0,1].](../../assets/logistic-regression/sigmoid-vs-linear.png){fig-alt="comparison of a straight linear model line against an s-shaped sigmoid curve, both plotted over the same x-axis" width=480}
 
-[equations and explanations to come.]{.note-placeholder}
+## mathematical formulation
 
-## example
+- compute the linear combination (the "logit" or log-odds), exactly as in linear regression: $z=w_0+w_1x_1+\dots+w_nx_n=w^\top x$
+- pass it through the sigmoid function: $\sigma(z)=\dfrac{1}{1+e^{-z}}$
+- the output $\hat y=\sigma(z)=P(y=1\mid x)$ is the predicted probability of the positive class; thresholding it (commonly at 0.5) gives the predicted class
+- equivalently, logistic regression models the **log-odds** as linear in the features: $\log\dfrac{p}{1-p}=z$, and solving for $p$ recovers the sigmoid — this is why it's a *linear* model even though its probability output is an s-curve, and why it belongs to the same [generalised linear model](generalised-linear-models.qmd) family as linear regression, just with a different link function
 
-[a worked example, figure, or code snippet to come.]{.note-placeholder}
+## loss & optimisation
+
+- fitting means choosing $w$ to maximise the likelihood of the observed labels, equivalently minimising log loss (binary cross-entropy): $\text{loss}=-\dfrac{1}{m}\sum_i\big[y_i\log\hat y_i+(1-y_i)\log(1-\hat y_i)\big]$ — see [loss functions](../training-evaluation/loss-functions.qmd) for how this connects to maximum likelihood, and [evaluation metrics](../training-evaluation/evaluation-metrics.qmd#log-loss-cross-entropy) for the formula's behaviour
+- unlike ols, there's no closed-form solution for $w$ — it's found with [gradient descent](../training-evaluation/gradient-descent.qmd) or a related iterative optimiser: $w_j:=w_j-\alpha\dfrac{\partial\,\text{loss}}{\partial w_j}$
+- the log loss surface for logistic regression is convex, so gradient-based optimisation reliably converges to the global optimum, the same guarantee [linear regression](linear-regression.qmd#fitting-the-model) has under ols
+
+## decision boundary
+
+- logistic regression is linear in feature space: the **decision boundary** — where $\hat y=0.5$, i.e. $z=0$ — is a straight line in 2d or a hyperplane in higher dimensions
+- with two features $x_1,x_2$ and weights $w=[w_0,w_1,w_2]$, the boundary is $w_0+w_1x_1+w_2x_2=0$; points on one side are predicted class 1, points on the other, class 0
+- this is why logistic regression works best when classes are linearly separable, or close to it — it can only ever carve feature space with a straight cut, not a curved one, unless features are transformed first (e.g. polynomial terms, interactions)
 
 ## practical considerations
 
-[assumptions, evaluation, and common pitfalls to come.]{.note-placeholder}
+- logistic regression outputs a probability, not just a label — the 0.5 threshold is a default, not a rule; move it to trade precision for recall, particularly under [class imbalance](../training-evaluation/class-imbalance.qmd#algorithm-level-approaches)
+- standardise features before fitting with gradient descent or when applying [regularisation](../training-evaluation/regularisation.qmd) (l1/l2 penalties on the weights work the same way as in linear regression, and are the standard way to control overfitting here)
+- evaluate with the classification metrics in [evaluation metrics](../training-evaluation/evaluation-metrics.qmd) — confusion matrix, precision/recall, f1, roc/auc, and the precision-recall curve under imbalance — rather than accuracy alone
+- coefficients are interpretable on the log-odds scale: $e^{w_j}$ is the multiplicative change in the odds of $y=1$ for a one-unit increase in $x_j$, holding other features fixed
 
 ## references
 
-[sources to come.]{.note-placeholder}
+- [scikit-learn: logistic regression](https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression)
+- [stanford cs229: logistic regression notes](https://cs229.stanford.edu/notes2020spring/cs229-notes1.pdf)
