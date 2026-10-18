@@ -8,6 +8,8 @@ title: "gradient descent"
 - the gradient points towards the steepest local increase; move in the opposite direction
 - the learning rate $\alpha$ controls the step size: $\beta_{t+1}=\beta_t-\alpha\nabla_\beta l(\beta_t)$
 
+![each step moves opposite the gradient, spiralling down the loss surface's contours toward the minimum; for a convex loss like unregularised least squares, this converges to the global minimum from any starting point](../../assets/linear-regression/gradient-descent-trajectory.png){fig-alt="contour plot showing gradient descent's optimization path spiraling into the minimum of a convex loss surface in two-parameter space" width=560}
+
 ## deriving the least-squares gradient
 
 - let $x$ have shape $(n,p)$, $\beta$ have shape $(p,)$, and $y$ have shape $(n,)$
@@ -48,6 +50,10 @@ beta = beta - learning_rate * gradient
 
 - unregularised least squares is convex: a suitable learning rate can converge to a global minimum, although parameters need not be unique
 - a direct least-squares solver is an alternative; see the [normal-equation connection](../foundations/covariance-matrix.qmd#the-normal-equation-connection)
+
+## image credit
+
+- the gradient descent trajectory diagram is from the author's own ml course notes; no public source link is available
 
 ## references
 
