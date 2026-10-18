@@ -5,12 +5,15 @@ toc: false
 
 the basic ideas and mathematical building blocks.
 
-covariance matrix and curse of dimensionality are available below; the overview is still being written.
+probability basics, eigenvalues & eigenvectors, covariance matrix, distance metrics, and curse of dimensionality are available below; the overview is still being written.
 
 ::: {.topic-index}
 
 - [machine learning overview](overview.qmd)
+- [probability basics](probability-basics.qmd)
+- [eigenvalues & eigenvectors](eigenvalues-eigenvectors.qmd)
 - [covariance matrix](covariance-matrix.qmd)
+- [distance metrics](distance-metrics.qmd)
 - [curse of dimensionality](curse-of-dimensionality.qmd)
 
 :::

@@ -1,0 +1,52 @@
+---
+title: "class imbalance"
+---
+
+## what counts as imbalanced
+
+- a classification dataset is imbalanced when classes aren't represented roughly equally — e.g. 95% healthy / 5% disease
+- mild imbalance (60/40) rarely needs special handling; severe imbalance (99/1, or rare-event detection like fraud) usually does
+- imbalance is a property of the data, not of the model — it has to be addressed with how the data is used and how performance is judged, not just a different algorithm
+
+## why it's a problem
+
+- a model can achieve high accuracy by mostly or entirely predicting the majority class, without learning anything about the minority class — see [baseline models](baseline-models.qmd)
+- many learning algorithms implicitly minimise overall error, so they're naturally biased toward getting the majority class right, since that's where most of the loss comes from
+- standard threshold-based metrics and even roc/auc can look better than the model deserves under heavy imbalance — see [evaluation metrics](evaluation-metrics.qmd#roc-curve--auc)
+
+## resampling approaches
+
+::: {.table-responsive tabindex="0"}
+
+| approach | how it works | tradeoff |
+|---|---|---|
+| random oversampling | duplicates minority-class examples | risks overfitting to the duplicated points |
+| random undersampling | drops majority-class examples | discards data, can hurt if the majority class is also informative |
+| smote | synthesises new minority examples by interpolating between existing ones | avoids exact duplicates, but can create unrealistic points in sparse regions |
+
+:::
+
+- resampling changes the training distribution, not the real-world distribution — evaluate on data that reflects the true class balance, not the resampled one
+
+## algorithm-level approaches
+
+- class weights: penalise mistakes on the minority class more heavily in the loss function, instead of changing the data (e.g. `class_weight="balanced"` in scikit-learn)
+- threshold adjustment: many classifiers output a probability; moving the decision threshold away from 0.5 trades precision for recall (or vice versa) without retraining — read off the right threshold from a [precision-recall curve](evaluation-metrics.qmd#precision-recall-curve--average-precision)
+- anomaly/novelty detection framings treat the minority class as "rare/abnormal" rather than as a standard classification target, when it's extremely rare
+
+## evaluation under imbalance
+
+- prefer precision, recall, f1, and the precision-recall curve over accuracy and roc/auc — see [evaluation metrics](evaluation-metrics.qmd)
+- always report performance alongside the class balance it was measured on, and compare against the majority-class baseline
+- stratify train/test and cross-validation splits so each fold preserves the original class proportions — see [train/test splits](train-test.qmd)
+
+## practical considerations
+
+- resample (or reweight) only the training fold, never the validation or test data — fit any resampling inside the cross-validation loop to avoid leakage, the same principle as [avoiding leakage in preprocessing](feature-engineering.qmd#avoiding-leakage)
+- more data for the minority class (if obtainable) usually beats synthetic resampling of what's already there
+- collecting better features that actually separate the classes often helps more than any resampling trick — imbalance handling can't manufacture signal that isn't in the data
+
+## references
+
+- [imbalanced-learn: resampling techniques](https://imbalanced-learn.org/stable/user_guide.html)
+- [scikit-learn: class weights](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC)

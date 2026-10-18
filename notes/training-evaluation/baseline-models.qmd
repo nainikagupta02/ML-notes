@@ -1,0 +1,42 @@
+---
+title: "baseline models"
+---
+
+## why start with a baseline
+
+- a baseline is the simplest reasonable predictor for a task — it answers "how good is good?" before any real model is built
+- without one, a metric value has no reference point: 85% accuracy sounds strong until you learn that always predicting the majority class also gets 85% on that dataset
+- a baseline also catches pipeline bugs early — if a complex model doesn't comfortably beat a trivial one, something is more likely wrong with the data or setup than with the modelling
+
+## common baselines
+
+::: {.table-responsive tabindex="0"}
+
+| task | baseline | what it does |
+|---|---|---|
+| classification | majority-class (most-frequent) | always predicts the most common class in the training data |
+| classification | stratified random | predicts classes randomly, matching the training class proportions |
+| regression | mean predictor | always predicts the training mean of the target |
+| regression | median predictor | always predicts the training median — more robust to outliers |
+| time series | persistence / naive | predicts the most recent observed value |
+
+:::
+
+- these baselines ignore the features entirely — they're deliberately uninformative, so that any model beating them is demonstrably using the features to add value
+
+## using the baseline
+
+- compute the same metrics for the baseline and the real model, on the same held-out data — see [evaluation metrics](evaluation-metrics.qmd)
+- for regression, $r^2$ is already baseline-relative: it compares the model's squared error to the mean predictor's, so $r^2\leq0$ means the model is no better than (or worse than) just predicting the mean
+- for classification under imbalance, compare against the majority-class baseline rather than treating accuracy as meaningful on its own — see [class imbalance](class-imbalance.qmd)
+- for a precision-recall curve, the relevant baseline is a flat line at the dataset's positive rate, not the 0.5 line used for roc/auc
+
+## practical considerations
+
+- a baseline should take seconds to build — if it's taking real effort, it's no longer serving its purpose
+- re-establish the baseline whenever the data changes (new features, different population, a shifted time window); a baseline computed on old data can be misleading
+- "beats the baseline" is a necessary, not sufficient, bar — a model can clear it while still being too weak, too biased, or too costly for the task at hand
+
+## references
+
+- [scikit-learn: dummy estimators](https://scikit-learn.org/stable/modules/generated/sklearn.dummy.DummyClassifier.html)

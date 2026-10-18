@@ -1,0 +1,41 @@
+---
+title: "distance metrics"
+---
+
+## why distance matters
+
+- many models and algorithms reduce to a notion of "how similar are these two points" — knn, k-means, dbscan, kernel methods, and anomaly detection all depend on a distance function
+- the choice of metric encodes assumptions about what "similar" means; a bad choice can make an otherwise good algorithm fail, especially as dimensionality grows — see [curse of dimensionality](curse-of-dimensionality.qmd)
+
+## common metrics
+
+::: {.table-responsive tabindex="0"}
+
+| metric | formula (between $x$ and $y$) | notes |
+|---|---|---|
+| euclidean | $\sqrt{\sum_i (x_i-y_i)^2}$ | straight-line distance; sensitive to feature scale |
+| manhattan (l1) | $\sum_i \lvert x_i-y_i\rvert$ | sum of axis-aligned steps; more robust to outliers than euclidean |
+| minkowski | $\big(\sum_i\lvert x_i-y_i\rvert^p\big)^{1/p}$ | generalises euclidean ($p=2$) and manhattan ($p=1$) |
+| cosine distance | $1-\dfrac{x\cdot y}{\lVert x\rVert\lVert y\rVert}$ | measures angle, not magnitude; common for text/embeddings |
+| hamming | fraction of positions where $x_i\neq y_i$ | for categorical or binary features |
+| mahalanobis | $\sqrt{(x-y)^\top s^{-1}(x-y)}$ | accounts for feature scale and correlation via the covariance matrix $s$ — see [covariance matrix](covariance-matrix.qmd#geometry--mahalanobis-distance) |
+
+:::
+
+## choosing a metric
+
+- euclidean distance assumes features are on comparable, roughly independent scales — standardise features first (see [feature engineering](../training-evaluation/feature-engineering.qmd#scaling--transformations)), or use mahalanobis distance, which builds the correlation structure in directly
+- cosine distance is preferred when only the direction of a vector matters, not its length — common for high-dimensional sparse data like text (tf-idf) or learned embeddings, where raw magnitude can reflect document length rather than meaning
+- manhattan distance is often more robust in high dimensions than euclidean, since it accumulates absolute rather than squared differences
+- hamming distance is the natural choice for categorical or binary features, where "how far apart" only makes sense as "how many positions differ"
+
+## practical considerations
+
+- always scale/standardise features before computing euclidean, manhattan, or minkowski distances unless every feature is already on the same meaningful scale
+- distance-based methods can struggle in high dimensions as distances concentrate — see [curse of dimensionality](curse-of-dimensionality.qmd) — which is a reason to reduce dimensionality or select features first
+- a metric must be learned or chosen before fitting, not tuned against the test set; treat it as a modelling choice validated like any other hyperparameter — see [hyperparameter tuning](../training-evaluation/hyperparameter-tuning.qmd)
+
+## references
+
+- [scikit-learn: pairwise metrics](https://scikit-learn.org/stable/modules/metrics.html#metrics)
+- [scikit-learn: nearest neighbours](https://scikit-learn.org/stable/modules/neighbors.html)

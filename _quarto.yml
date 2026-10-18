@@ -29,8 +29,14 @@ website:
         contents:
           - href: notes/foundations/overview.qmd
             text: "machine learning overview"
+          - href: notes/foundations/probability-basics.qmd
+            text: "probability basics"
+          - href: notes/foundations/eigenvalues-eigenvectors.qmd
+            text: "eigenvalues & eigenvectors"
           - href: notes/foundations/covariance-matrix.qmd
             text: "covariance matrix"
+          - href: notes/foundations/distance-metrics.qmd
+            text: "distance metrics"
           - href: notes/foundations/curse-of-dimensionality.qmd
             text: "curse of dimensionality"
       - section: "training & evaluation"
@@ -38,6 +44,8 @@ website:
         contents:
           - href: notes/training-evaluation/train-test.qmd
             text: "train/test splits"
+          - href: notes/training-evaluation/hyperparameter-tuning.qmd
+            text: "hyperparameter tuning"
           - href: notes/training-evaluation/preprocessing.qmd
             text: "preprocessing"
           - href: notes/training-evaluation/feature-engineering.qmd
@@ -48,8 +56,14 @@ website:
             text: "gradient descent"
           - href: notes/training-evaluation/bias-variance.qmd
             text: "residuals & the bias–variance tradeoff"
+          - href: notes/training-evaluation/learning-curves.qmd
+            text: "learning curves"
           - href: notes/training-evaluation/regularisation.qmd
             text: "regularisation"
+          - href: notes/training-evaluation/baseline-models.qmd
+            text: "baseline models"
+          - href: notes/training-evaluation/class-imbalance.qmd
+            text: "class imbalance"
           - href: notes/training-evaluation/evaluation-metrics.qmd
             text: "evaluation metrics"
       - section: "supervised learning"

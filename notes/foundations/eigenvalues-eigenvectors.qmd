@@ -1,0 +1,39 @@
+---
+title: "eigenvalues & eigenvectors"
+---
+
+## the eigenvalue equation
+
+- for a square matrix $a$, a nonzero vector $v$ is an eigenvector if multiplying by $a$ only rescales it, without changing its direction: $av=\lambda v$
+- $\lambda$ is the corresponding eigenvalue — how much $v$ is stretched (or flipped, if $\lambda<0$)
+- most directions change under $av$; eigenvectors are the special directions that don't
+
+## finding eigenvalues & eigenvectors
+
+- rearranging gives $(a-\lambda i)v=0$, which has a nonzero solution $v$ only when $a-\lambda i$ is singular, i.e. $\det(a-\lambda i)=0$
+- this determinant is a polynomial in $\lambda$ — the characteristic polynomial — whose roots are the eigenvalues; an $n\times n$ matrix has up to $n$ eigenvalues (counted with multiplicity, possibly complex)
+- for each eigenvalue, solving $(a-\lambda i)v=0$ gives its eigenvector(s); eigenvectors are only defined up to scale (if $v$ works, so does $cv$ for any $c\neq0$)
+
+## eigendecomposition
+
+- if $a$ has $n$ linearly independent eigenvectors, it factors as $a=q\Lambda q^{-1}$, with $\Lambda$ a diagonal matrix of eigenvalues and $q$ the matrix of eigenvectors as columns
+- for a **symmetric** matrix (like a [covariance matrix](covariance-matrix.qmd)), eigenvectors are orthogonal and eigenvalues are real, so the decomposition simplifies to $a=q\Lambda q^\top$ with $q$ orthogonal ($q^\top q=i$) — the spectral theorem
+- a matrix is positive semidefinite exactly when all its eigenvalues are $\geq0$; this is why a covariance matrix (positive semidefinite by construction) never has negative eigenvalues
+
+## where it appears
+
+- **pca**: the eigenvectors of the covariance matrix are the principal directions of the data; the corresponding eigenvalues are the variance explained along each direction, largest first — see [covariance matrix](covariance-matrix.qmd) and [pca](../dimensionality-reduction/pca.qmd)
+- **svd**: the singular values of a matrix are the square roots of the eigenvalues of $x^\top x$ (or $xx^\top$); see [svd](../dimensionality-reduction/svd.qmd)
+- **spectral clustering**: clusters data using eigenvectors of a graph similarity matrix
+- **stability**: in dynamical systems and optimisation, the eigenvalues of a jacobian or hessian determine whether a fixed point is stable and whether a critical point is a minimum, maximum, or saddle
+
+## practical considerations
+
+- eigenvectors are not unique in sign or scale — libraries may return $v$ or $-v$ for the same eigenvector; this doesn't change what it represents
+- a matrix without $n$ independent eigenvectors is not diagonalisable, though it still has eigenvalues; this is rare for the symmetric matrices most common in ml
+- numerically, eigendecomposition of large or ill-conditioned matrices benefits from stable library routines rather than direct computation from the characteristic polynomial, which is numerically unstable for larger matrices
+
+## references
+
+- [3blue1brown: eigenvectors and eigenvalues (video)](https://www.3blue1brown.com/lessons/eigenvalues)
+- [numpy: eigenvalues and eigenvectors](https://numpy.org/doc/stable/reference/generated/numpy.linalg.eig.html)

@@ -1,0 +1,42 @@
+---
+title: "hyperparameter tuning"
+---
+
+## parameters vs hyperparameters
+
+- parameters are learned from data during training — regression coefficients, a neural network's weights
+- hyperparameters are set before training and control how learning happens — learning rate, tree depth, $k$ in knn, $\lambda$ in [regularisation](regularisation.qmd), number of folds, network architecture
+- hyperparameters can't be chosen by minimising training loss directly — a sufficiently flexible model always reduces training error by overfitting, so they're chosen against a validation set or cross-validation instead, never the test set — see [train/test splits](train-test.qmd)
+
+## search strategies
+
+::: {.table-responsive tabindex="0"}
+
+| strategy | how it works | when to use |
+|---|---|---|
+| grid search | tries every combination on a predefined grid of values | few hyperparameters, small search space, want exhaustive coverage |
+| random search | samples random combinations from specified ranges/distributions | more hyperparameters; often finds a good result faster than grid search for the same budget, since not every hyperparameter matters equally |
+| bayesian optimisation | builds a probabilistic model of performance vs. hyperparameters, and picks the next candidate expected to improve most | expensive-to-train models where each trial counts; fewer trials needed than random search |
+
+:::
+
+- random search outperforms grid search in practice when only a few hyperparameters actually drive performance — grid search wastes trials varying unimportant ones at the same resolution as important ones
+- bayesian optimisation and related methods (e.g. successive halving, hyperband) trade implementation complexity for sample efficiency when each candidate is costly to train
+
+## evaluating each candidate
+
+- score each candidate hyperparameter setting on a held-out validation set, or by averaging across folds in cross-validation
+- use nested cross-validation when both tuning hyperparameters and getting an unbiased estimate of final performance matter — an inner loop tunes, an outer loop evaluates — see [train/test splits](train-test.qmd#cross-validation)
+- once the best setting is chosen, refit on all available training data (train + validation) before the final test-set evaluation
+
+## practical considerations
+
+- the search space matters as much as the search strategy — log-scale ranges for learning rate or $\lambda$ (e.g. $10^{-4}$ to $10^{1}$) search more sensibly than linear ranges
+- tuning many hyperparameters against a small validation set risks overfitting to that set itself; cross-validation or a larger validation set helps
+- computational budget usually dictates the choice: grid/random search parallelise trivially across independent trials, while bayesian optimisation is sequential but needs far fewer trials
+- preprocessing and feature engineering choices can also be tuned this way, not just model hyperparameters — but must be refit within each training fold to avoid leakage, see [feature engineering](feature-engineering.qmd#avoiding-leakage)
+
+## references
+
+- [scikit-learn: tuning hyperparameters](https://scikit-learn.org/stable/modules/grid_search.html)
+- [bergstra & bengio: random search for hyper-parameter optimization](https://jmlr.org/papers/v13/bergstra12a.html)

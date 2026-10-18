@@ -1,0 +1,49 @@
+---
+title: "probability basics"
+---
+
+## conditional probability & independence
+
+- $P(A\mid B)$ is the probability of $A$ given that $B$ has occurred: $P(A\mid B)=\dfrac{P(A\cap B)}{P(B)}$ for $P(B)>0$
+- $A$ and $B$ are independent when knowing one tells you nothing about the other: $P(A\mid B)=P(A)$, equivalently $P(A\cap B)=P(A)P(B)$
+- independence is an assumption to check, not a default — naive bayes relies on a (often wrong, still useful) assumption that features are independent given the class
+
+## bayes' theorem
+
+- bayes' theorem inverts a conditional probability: $P(A\mid B)=\dfrac{P(B\mid A)\,P(A)}{P(B)}$
+- in modelling terms, with a hypothesis/class $h$ and observed data $d$: $P(h\mid d)=\dfrac{P(d\mid h)\,P(h)}{P(d)}$, read as posterior $\propto$ likelihood $\times$ prior
+- $P(h)$ is the prior belief before seeing data, $P(d\mid h)$ is the likelihood of the data under that hypothesis, $P(d)$ is a normalising constant summed/integrated over all hypotheses, and $P(h\mid d)$ is the updated (posterior) belief
+- naive bayes classifiers apply this directly: pick the class $c$ that maximises $P(c\mid x)\propto P(x\mid c)\,P(c)$, using the (naive) assumption that features of $x$ are conditionally independent given $c$
+
+## random variables, expectation & variance
+
+- a random variable maps outcomes to numbers; it is discrete (countable values, e.g. a class label) or continuous (e.g. a measurement)
+- expectation is the probability-weighted average: $\mathbb{E}[X]=\sum_x x\,P(X=x)$ for discrete $X$, or $\int x\,f(x)\,dx$ for continuous $X$ with density $f$
+- variance measures spread around the mean: $\operatorname{var}(X)=\mathbb{E}[(X-\mathbb{E}[X])^2]=\mathbb{E}[X^2]-\mathbb{E}[X]^2$
+- expectation is linear — $\mathbb{E}[aX+bY]=a\mathbb{E}[X]+b\mathbb{E}[Y]$ — even when $X$ and $Y$ are dependent; this underlies the [bias-variance decomposition](../training-evaluation/bias-variance.qmd)
+
+## common distributions
+
+::: {.table-responsive tabindex="0"}
+
+| distribution | models | typical use in ml |
+|---|---|---|
+| bernoulli | a single binary outcome (0/1) | the label in binary classification |
+| binomial | number of successes in $n$ independent bernoulli trials | counts of successes/events |
+| gaussian (normal) | continuous, symmetric, bell-shaped data | noise assumption behind least squares; many natural measurements |
+| poisson | counts of rare events in a fixed interval | event-count data (e.g. mutations per sample) |
+
+:::
+
+- many models assume a distribution for the noise or the outcome — least squares implicitly assumes gaussian-distributed residuals, logistic regression assumes a bernoulli-distributed label; see [loss functions](../training-evaluation/loss-functions.qmd) for how this connects to maximum likelihood
+
+## practical considerations
+
+- a flat/uninformative prior lets the data dominate the posterior; a strong prior matters most when data is scarce
+- the independence assumption behind naive bayes is usually false in a strict sense, but the classifier can still work well because only the relative ranking of $P(c\mid x)$ across classes needs to be right, not the exact probabilities
+- check which distribution a model assumes before trusting its inferences — violating that assumption (e.g. skewed, heavy-tailed data treated as gaussian) can bias estimates and understate uncertainty
+
+## references
+
+- [khan academy: conditional probability & bayes' theorem](https://www.khanacademy.org/math/statistics-probability/probability-library/conditional-probability-independence/a/check-independence-conditional-probability)
+- [scikit-learn: naive bayes](https://scikit-learn.org/stable/modules/naive_bayes.html)
