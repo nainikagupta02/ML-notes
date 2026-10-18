@@ -2,24 +2,61 @@
 title: "regularisation"
 ---
 
-[not yet written]{.note-status}
+## what & why
 
-## intuition
+- regularisation adds a penalty to the loss function that discourages complex models, applied during training to prevent overfitting.
+- without it, a flexible model can fit the training data too closely — including its noise — and fail on new data: low training error, high test error.
+- with it, the model trades a little training error for a smaller gap to validation/test error: slightly higher training error, but better generalisation.
+- it matters most with many features, high collinearity among predictors, high-variance or very flexible models, or when the number of features approaches the number of samples.
 
-[notes to come.]{.note-placeholder}
+## why high weights are a problem
+
+- a large weight makes a prediction oversensitive to small changes in its input. with $y=100x_1-50x_2$, a tiny change in $x_1$ or $x_2$ swings $y$ a lot — fine on data the model has memorised, unstable on anything new.
+- consequences of unchecked large weights: the model starts fitting noise rather than signal (overfitting); training error can look great while validation/test error is high; in neural networks, large weights can contribute to exploding gradients and saturate activations like sigmoid/tanh, slowing or stalling learning; and in linear models, large weights make it hard to tell which features actually matter.
+- regularisation counters this by penalising large weights directly, shrinking them toward zero (or exactly to zero) and making the model more stable and interpretable. think of each weight as a spring: an unregularised weight is a stiff spring that jumps wildly with small pushes, a regularised one is a soft spring that moves smoothly and predictably.
 
 ## maths
 
-[equations and explanations to come.]{.note-placeholder}
+- ordinary loss (e.g. least squares) fits the data alone: $\text{loss}_{\text{ols}}=\sum_i (y_i-\hat y_i)^2$.
+- regularised loss adds a penalty term on top of that data-fit term, controlled by $\lambda\geq 0$.
 
-## example
+::: {.table-responsive tabindex="0"}
 
-[a worked example, figure, or code snippet to come.]{.note-placeholder}
+| method | loss | penalty |
+|---|---|---|
+| l2 / ridge | $\sum_i(y_i-\hat y_i)^2+\lambda\sum_j w_j^2$ | sum of squared weights |
+| l1 / lasso | $\sum_i(y_i-\hat y_i)^2+\lambda\sum_j \lvert w_j\rvert$ | sum of absolute weights |
+| elastic net | $\sum_i(y_i-\hat y_i)^2+\lambda\big[\alpha\sum_j\lvert w_j\rvert+(1-\alpha)\sum_j w_j^2\big]$ | weighted mix of l1 and l2 |
+
+:::
+
+- $\lambda$ sets the strength of regularisation: higher $\lambda$ means more penalty and a simpler model; $\lambda=0$ recovers the unregularised loss.
+- $\alpha$ (elastic net only) balances l1 against l2: $\alpha=1$ is pure lasso, $\alpha=0$ is pure ridge.
+- l2 shrinks weights smoothly toward zero but rarely sets them to exactly zero. l1 can drive weights to exactly zero, which performs implicit feature selection. elastic net combines both behaviours, which helps when predictors are correlated (lasso alone tends to arbitrarily pick one of a correlated group).
+- the bias term is usually left unregularised, since shrinking it doesn't address overfitting to the features.
+
+## where it's used
+
+- linear models: linear regression (ridge/lasso) and logistic regression.
+- neural networks: l2 regularisation is often called "weight decay" there.
+- feature selection: lasso's sparsity zeroes out irrelevant features.
+- high-dimensional data, especially when the number of features is comparable to the number of samples.
+- general overfitting prevention in any predictive model.
+
+## choosing $\lambda$ & reading the graphs
+
+- weight magnitude vs. $\lambda$: as $\lambda$ grows, ridge weights shrink smoothly toward (but rarely reach) zero; lasso weights drop to exactly zero one at a time, producing a sparse model.
+- validation error vs. $\lambda$: typically u-shaped — too little regularisation overfits (low training error, high validation error), too much underfits (both errors high, model too simple). the goal is the $\lambda$ at the bottom of that curve, not the smallest training error.
+- pick $\lambda$ (and $\alpha$ for elastic net) using the validation set or cross-validation — see [train/test splits](train-test.qmd) — never the test set.
 
 ## practical considerations
 
-[assumptions, evaluation, and common pitfalls to come.]{.note-placeholder}
+- standardise/scale features before applying l1 or l2 penalties; otherwise the penalty falls unevenly across features with different scales.
+- evaluate the regularised model with the same metrics used elsewhere: mse/rmse/$r^2$ for regression, accuracy/precision/recall/f1/roc-auc for classification — see [evaluation metrics](evaluation-metrics.qmd).
+- regularisation reduces variance at the cost of a small increase in bias; see [residuals & the bias–variance tradeoff](bias-variance.qmd) for the underlying tradeoff it's managing.
+- key takeaway: ridge (l2) shrinks weights, lasso (l1) produces sparse weights, elastic net aims for the best of both.
 
 ## references
 
-[sources to come.]{.note-placeholder}
+- [scikit-learn: linear models — ridge, lasso & elastic net](https://scikit-learn.org/stable/modules/linear_model.html).
+- [scikit-learn: regularisation path of l1-lasso](https://scikit-learn.org/stable/auto_examples/linear_model/plot_lasso_coordinate_descent_path.html).

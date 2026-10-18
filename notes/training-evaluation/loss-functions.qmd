@@ -2,24 +2,60 @@
 title: "loss functions"
 ---
 
-[not yet written]{.note-status}
+## the big picture
 
-## intuition
+- loss, likelihood, log-likelihood, and deviance are four ways of answering the same question — how bad is my model? — from different angles.
 
-[notes to come.]{.note-placeholder}
+::: {.table-responsive tabindex="0"}
 
-## maths
+| term | used in | idea |
+|---|---|---|
+| loss function | ml (general) | what we minimise |
+| likelihood | statistics | how probable the observed data is under the model |
+| log-likelihood | statistics | the same thing, with easier math |
+| deviance | glms (e.g. logistic regression) | "badness" relative to a perfect model |
 
-[equations and explanations to come.]{.note-placeholder}
+:::
 
-## example
+## loss functions
 
-[a worked example, figure, or code snippet to come.]{.note-placeholder}
+- a loss function measures prediction error; training minimises it.
+- linear regression typically minimises squared error loss: $\text{loss}=\sum_i(y_i-\hat y_i)^2$.
+- logistic regression minimises log loss (cross-entropy); see [evaluation metrics](evaluation-metrics.qmd) for its formula and when to use it.
+
+## likelihood & log-likelihood
+
+- the statistics framing flips the question: how likely is the data I observed, given this model? $L(\theta)=P(\text{data}\mid\theta)$.
+- high likelihood means a good model; low likelihood means a bad one. fitting a model this way means maximising likelihood, not minimising error.
+- taking the log turns products into sums and makes derivatives easier: $\log L(\theta)$. maximising log-likelihood gives the same optimum as maximising likelihood, since log is monotonic.
+
+## the key connection
+
+- minimising loss and maximising log-likelihood are the same optimisation in disguise: $\{\text{minimise loss}\}=\{\text{maximise log-likelihood}\}$.
+- example — linear regression: if the errors are gaussian, maximising the log-likelihood is algebraically equivalent to minimising the sum of squared errors. that's why ordinary least squares is also the maximum-likelihood estimator under gaussian noise.
+
+## deviance
+
+- deviance measures how far a model is from a perfect ("saturated") model — one that predicts every data point exactly: $\text{deviance}=2\big(\log L_{\text{perfect}}-\log L_{\text{model}}\big)$.
+- a perfect model has deviance 0; a worse model has larger deviance, so lower deviance means a better fit.
+- for many models, deviance is just a scaled version of the loss:
+
+::: {.table-responsive tabindex="0"}
+
+| model | loss | deviance |
+|---|---|---|
+| linear regression | squared error loss (rss) | rss itself — equals $-$log-likelihood up to a constant |
+| logistic regression | log loss (cross-entropy) | $2\times$ log loss |
+
+:::
 
 ## practical considerations
 
-[assumptions, evaluation, and common pitfalls to come.]{.note-placeholder}
+- "minimise the loss," "maximise the likelihood," and "minimise the deviance" are, for most standard models, three descriptions of the same fitting procedure — expect to see all three depending on whether a source comes from an ml or a statistics background.
+- which loss to pick depends on the outcome type and what errors should cost: squared error for continuous outcomes assuming roughly gaussian noise, log loss for probabilistic binary/multiclass outcomes, and task-specific losses (hinge loss for margin-based classifiers, pseudo-residuals from the loss gradient in gradient boosting) elsewhere in these notes.
+- a non-convex loss surface (e.g. in neural networks) means gradient descent can only be guaranteed to find a local, not global, minimum — see [gradient descent](gradient-descent.qmd).
 
 ## references
 
-[sources to come.]{.note-placeholder}
+- [scikit-learn: loss functions for classification & regression](https://scikit-learn.org/stable/modules/sgd.html#mathematical-formulation).
+- [wikipedia: deviance (statistics)](https://en.wikipedia.org/wiki/Deviance_(statistics)).

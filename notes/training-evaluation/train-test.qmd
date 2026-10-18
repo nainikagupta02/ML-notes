@@ -2,24 +2,49 @@
 title: "train/test splits"
 ---
 
-[not yet written]{.note-status}
+## train / validation / test splits
 
-## intuition
+- a dataset is typically divided into three parts, each with a distinct job.
 
-[notes to come.]{.note-placeholder}
+::: {.table-responsive tabindex="0"}
 
-## maths
+| split | purpose |
+|---|---|
+| training set | trains the model — adjusts its weights or parameters |
+| validation set | tunes hyperparameters and selects between models, without touching the test set |
+| test set | evaluates the final model's performance on completely unseen data |
 
-[equations and explanations to come.]{.note-placeholder}
+:::
 
-## example
+- a common split for a moderately sized dataset is roughly 70% training, 15% validation, 15% test, though the right proportions depend on how much data is available.
+- flow: train on the training set, tune hyperparameters (learning rate, tree depth, regularisation strength, …) against the validation set, then — once a final model is chosen — evaluate it once on the test set.
+- the test set is sacred: it should never influence training or hyperparameter choices. using it more than once to compare models turns it into a second validation set and the reported performance becomes optimistic.
 
-[a worked example, figure, or code snippet to come.]{.note-placeholder}
+## cross-validation
+
+- with a small dataset, holding out a separate validation set wastes data that could otherwise help training. k-fold cross-validation reuses the data more efficiently by rotating which portion is held out.
+- k-fold cv: split the data into $k$ folds; for each fold, train on the other $k-1$ folds and evaluate on the held-out fold; average the metric across all $k$ runs for a more robust estimate.
+- nested cross-validation separates hyperparameter tuning from performance estimation: an inner cv loop tunes hyperparameters, and an outer cv loop estimates the final model's performance — avoiding the optimism that comes from tuning and evaluating on the same folds.
+
+::: {.table-responsive tabindex="0"}
+
+| aspect | train/val/test split | cross-validation |
+|---|---|---|
+| data usage | fixed splits | folds rotate, so all data is used for both training and testing |
+| robustness | depends on a single split | averaged across folds, generally more reliable |
+| computation | fast — one model trained | slower — $k$ models trained |
+| when to use | large datasets | small or moderate datasets |
+
+:::
 
 ## practical considerations
 
-[assumptions, evaluation, and common pitfalls to come.]{.note-placeholder}
+- for large datasets, a single train/val/test split is usually sufficient and far cheaper than cv.
+- for small or moderate datasets, k-fold cv (commonly $k=5$ or $k=10$) makes better use of limited data.
+- hyperparameter tuning can be done against a validation set or an inner cv loop; final evaluation should still happen on data the model and its tuning process never saw.
+- for data with structure — time series, grouped/repeated measurements, class imbalance — use a split or cv scheme that respects that structure (e.g. time-based splits, group k-fold, stratified k-fold) rather than a plain random split.
 
 ## references
 
-[sources to come.]{.note-placeholder}
+- [scikit-learn: cross-validation](https://scikit-learn.org/stable/modules/cross_validation.html).
+- [scikit-learn: nested versus non-nested cross-validation](https://scikit-learn.org/stable/auto_examples/model_selection/plot_nested_cross_validation_iris.html).

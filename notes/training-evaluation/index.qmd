@@ -5,7 +5,7 @@ toc: false
 
 how models learn, generalise, and get evaluated.
 
-feature engineering, gradient descent, residuals & the bias–variance tradeoff, and evaluation metrics are available below; the other topics are still being written.
+feature engineering, train/test splits, loss functions, gradient descent, regularisation, residuals & the bias–variance tradeoff, and evaluation metrics are available below; the other topics are still being written.
 
 ::: {.topic-index}
 
