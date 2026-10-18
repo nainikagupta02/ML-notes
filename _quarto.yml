@@ -50,6 +50,8 @@ website:
             text: "regularisation"
           - href: notes/training-evaluation/bias-variance.qmd
             text: "residuals & the bias–variance tradeoff"
+          - href: notes/training-evaluation/evaluation-metrics.qmd
+            text: "evaluation metrics"
       - section: "supervised learning"
         href: notes/supervised-learning/index.qmd
         contents:
