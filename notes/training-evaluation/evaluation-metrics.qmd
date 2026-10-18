@@ -65,6 +65,8 @@ title: "evaluation metrics"
 - when to use: imbalanced classes where the positive class is rare and is the one of interest (fraud, disease detection) — it does not get inflated by a large pool of easy true negatives the way roc/auc can
 - good result/graph: a curve that stays high and to the right, hugging the top-right corner; average precision (the area under this curve) close to 1. the baseline to beat is a flat line at the dataset's positive rate, not 0.5
 
+![roc curves plot true/false positive rate and look informative even under imbalance; precision-recall curves plot precision against recall and expose the cost of false positives among a rare positive class more clearly — use roc when classes are roughly balanced, precision-recall when they're not](../../assets/evaluation-metrics/roc-vs-precision-recall.png){fig-alt="side-by-side roc curve and precision-recall curve plotted from the same classifier, with notes on when each is the better choice" width=640}
+
 ## log loss (cross-entropy)
 
 - for binary outcomes, $\text{log loss}=-\dfrac{1}{n}\sum_i \big[y_i\log(\hat p_i)+(1-y_i)\log(1-\hat p_i)\big]$, using predicted probabilities $\hat p_i$ rather than hard class labels
@@ -96,6 +98,10 @@ title: "evaluation metrics"
 - under class imbalance, accuracy and roc/auc can both look better than the model deserves; check precision, recall, and a precision-recall curve
 - when probabilities feed a downstream decision, check calibration (brier score, reliability diagram) in addition to discrimination (auc, f1)
 - always report a metric alongside the class balance or base rate it was computed against — a metric value means little on its own
+
+## image credit
+
+- [precision-recall curve vs roc-auc curve](https://ashutoshtripathi.com/2022/01/09/what-is-the-difference-between-precision-recall-curve-vs-roc-auc-curve/), ashutosh tripathi
 
 ## references
 

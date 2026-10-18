@@ -35,6 +35,8 @@ title: "regularisation"
 - l2 shrinks weights smoothly toward zero but rarely sets them to exactly zero. l1 can drive weights to exactly zero, which performs implicit feature selection. elastic net combines both behaviours, which helps when predictors are correlated (lasso alone tends to arbitrarily pick one of a correlated group)
 - the bias term is usually left unregularised, since shrinking it doesn't address overfitting to the features
 
+![minimising the loss subject to a penalty is the same as finding where the error contours first touch the penalty's constraint region: l2's circular region is smooth everywhere, so the touching point rarely lands on an axis; l1's diamond region has corners on the axes, so the touching point often lands exactly there — zeroing out a weight](../../assets/regularisation/l1-vs-l2-geometry.png){fig-alt="two contour plots comparing where elliptical error gradients first intersect a circular l2 penalty region versus a diamond-shaped l1 penalty region, with the l1 case touching at a corner on an axis" width=640}
+
 ## where it's used
 
 - linear models: linear regression (ridge/lasso) and logistic regression
@@ -55,6 +57,10 @@ title: "regularisation"
 - evaluate the regularised model with the same metrics used elsewhere: mse/rmse/$r^2$ for regression, accuracy/precision/recall/f1/roc-auc for classification — see [evaluation metrics](evaluation-metrics.qmd)
 - regularisation reduces variance at the cost of a small increase in bias; see [residuals & the bias–variance tradeoff](bias-variance.qmd) for the underlying tradeoff it's managing
 - key takeaway: ridge (l2) shrinks weights, lasso (l1) produces sparse weights, elastic net aims for the best of both
+
+## image credit
+
+- [ridge vs lasso: the geometry of regularization in machine learning](https://medium.com/@harshr2803/ridge-vs-lasso-the-geometry-of-regularization-in-machine-learning-6c2ae1df79a5), harsh r
 
 ## references
 
