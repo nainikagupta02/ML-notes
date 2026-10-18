@@ -4,7 +4,7 @@ title: "evaluation metrics"
 
 ## confusion matrix
 
-- a classifier's predictions against a binary ground truth fall into four buckets: true positive (tp), false positive (fp), true negative (tn), false negative (fn).
+- a classifier's predictions against a binary ground truth fall into four buckets: true positive (tp), false positive (fp), true negative (tn), false negative (fn)
 
 ::: {.table-responsive tabindex="0"}
 
@@ -15,68 +15,68 @@ title: "evaluation metrics"
 
 :::
 
-- most threshold-based metrics below are just different ratios of these four counts.
-- use it as the first diagnostic for any classifier: aggregate metrics can hide which kind of error (fp or fn) is actually accumulating.
+- most threshold-based metrics below are just different ratios of these four counts
+- use it as the first diagnostic for any classifier: aggregate metrics can hide which kind of error (fp or fn) is actually accumulating
 
 ## accuracy
 
-- $\text{accuracy}=\dfrac{tp+tn}{tp+tn+fp+fn}$, the fraction of all predictions that were correct.
-- when to use: roughly balanced classes, and fp and fn are similarly costly.
-- when not to use: imbalanced classes. predicting "healthy" for everyone in a dataset that is 95% healthy gives 95% accuracy while catching zero disease cases.
-- good result: close to 1, but only meaningful alongside the class balance and at least one of precision/recall.
+- $\text{accuracy}=\dfrac{tp+tn}{tp+tn+fp+fn}$, the fraction of all predictions that were correct
+- when to use: roughly balanced classes, and fp and fn are similarly costly
+- when not to use: imbalanced classes. predicting "healthy" for everyone in a dataset that is 95% healthy gives 95% accuracy while catching zero disease cases
+- good result: close to 1, but only meaningful alongside the class balance and at least one of precision/recall
 
 ## precision
 
-- $\text{precision}=\dfrac{tp}{tp+fp}$, of everything predicted positive, the fraction that actually is.
-- when to use: false positives are expensive — flagging a healthy patient for an invasive follow-up, marking legitimate email as spam.
-- good result: close to 1. a low precision means many of the positive calls are false alarms.
+- $\text{precision}=\dfrac{tp}{tp+fp}$, of everything predicted positive, the fraction that actually is
+- when to use: false positives are expensive — flagging a healthy patient for an invasive follow-up, marking legitimate email as spam
+- good result: close to 1. a low precision means many of the positive calls are false alarms
 
 ## recall (sensitivity, true positive rate)
 
-- $\text{recall}=\dfrac{tp}{tp+fn}$, of everything actually positive, the fraction caught.
-- when to use: false negatives are expensive — missing a cancer diagnosis, letting fraud through.
-- good result: close to 1. a low recall means real positives are slipping through undetected.
-- precision and recall trade off against each other as the decision threshold moves; raising the threshold usually raises precision and lowers recall.
+- $\text{recall}=\dfrac{tp}{tp+fn}$, of everything actually positive, the fraction caught
+- when to use: false negatives are expensive — missing a cancer diagnosis, letting fraud through
+- good result: close to 1. a low recall means real positives are slipping through undetected
+- precision and recall trade off against each other as the decision threshold moves; raising the threshold usually raises precision and lowers recall
 
 ## specificity (true negative rate)
 
-- $\text{specificity}=\dfrac{tn}{tn+fp}$, of everything actually negative, the fraction correctly called negative.
-- when to use: alongside recall when both classes matter — e.g. a screening test needs to know it isn't crying wolf on healthy people as well as catching the sick ones.
-- good result: close to 1, paired with high recall. a test with high recall but low specificity generates many false alarms.
+- $\text{specificity}=\dfrac{tn}{tn+fp}$, of everything actually negative, the fraction correctly called negative
+- when to use: alongside recall when both classes matter — e.g. a screening test needs to know it isn't crying wolf on healthy people as well as catching the sick ones
+- good result: close to 1, paired with high recall. a test with high recall but low specificity generates many false alarms
 
 ## f1 score
 
-- $\text{f1}=2\cdot\dfrac{\text{precision}\cdot\text{recall}}{\text{precision}+\text{recall}}$, the harmonic mean of precision and recall.
-- when to use: one number is needed to summarise the precision/recall tradeoff, especially under class imbalance, and both error types matter roughly equally.
-- good result: close to 1. f1 is low whenever either precision or recall is low, which is the point of using the harmonic mean rather than the arithmetic mean.
-- use $f_\beta$ with $\beta\neq 1$ to weight recall ($\beta>1$) or precision ($\beta<1$) more heavily when the costs are not equal.
+- $\text{f1}=2\cdot\dfrac{\text{precision}\cdot\text{recall}}{\text{precision}+\text{recall}}$, the harmonic mean of precision and recall
+- when to use: one number is needed to summarise the precision/recall tradeoff, especially under class imbalance, and both error types matter roughly equally
+- good result: close to 1. f1 is low whenever either precision or recall is low, which is the point of using the harmonic mean rather than the arithmetic mean
+- use $f_\beta$ with $\beta\neq 1$ to weight recall ($\beta>1$) or precision ($\beta<1$) more heavily when the costs are not equal
 
 ## roc curve & auc
 
-- the roc curve plots true positive rate (recall) against false positive rate ($1-\text{specificity}$) as the classification threshold sweeps across all values.
-- auc (area under the roc curve) is the probability that the model ranks a random positive example above a random negative one.
-- when to use: comparing classifiers independent of a chosen threshold, and class balance is not extreme.
-- when not to use: heavily imbalanced data, where auc can look optimistic because it rewards ranking true negatives correctly even when positives are rare; prefer a precision-recall curve there.
-- good result/graph: a curve that bows up toward the top-left corner, auc close to 1. the diagonal line (auc = 0.5) is random guessing; a curve below the diagonal is worse than random.
+- the roc curve plots true positive rate (recall) against false positive rate ($1-\text{specificity}$) as the classification threshold sweeps across all values
+- auc (area under the roc curve) is the probability that the model ranks a random positive example above a random negative one
+- when to use: comparing classifiers independent of a chosen threshold, and class balance is not extreme
+- when not to use: heavily imbalanced data, where auc can look optimistic because it rewards ranking true negatives correctly even when positives are rare; prefer a precision-recall curve there
+- good result/graph: a curve that bows up toward the top-left corner, auc close to 1. the diagonal line (auc = 0.5) is random guessing; a curve below the diagonal is worse than random
 
 ## precision-recall curve & average precision
 
-- plots precision against recall as the threshold sweeps, instead of tpr against fpr.
-- when to use: imbalanced classes where the positive class is rare and is the one of interest (fraud, disease detection) — it does not get inflated by a large pool of easy true negatives the way roc/auc can.
-- good result/graph: a curve that stays high and to the right, hugging the top-right corner; average precision (the area under this curve) close to 1. the baseline to beat is a flat line at the dataset's positive rate, not 0.5.
+- plots precision against recall as the threshold sweeps, instead of tpr against fpr
+- when to use: imbalanced classes where the positive class is rare and is the one of interest (fraud, disease detection) — it does not get inflated by a large pool of easy true negatives the way roc/auc can
+- good result/graph: a curve that stays high and to the right, hugging the top-right corner; average precision (the area under this curve) close to 1. the baseline to beat is a flat line at the dataset's positive rate, not 0.5
 
 ## log loss (cross-entropy)
 
-- for binary outcomes, $\text{log loss}=-\dfrac{1}{n}\sum_i \big[y_i\log(\hat p_i)+(1-y_i)\log(1-\hat p_i)\big]$, using predicted probabilities $\hat p_i$ rather than hard class labels.
-- when to use: the predicted probabilities themselves matter (risk scores, downstream decision-making), not just the final class call.
-- good result: close to 0. log loss punishes confident wrong predictions heavily — predicting $\hat p=0.99$ for a case that turns out negative costs far more than predicting $\hat p=0.6$.
+- for binary outcomes, $\text{log loss}=-\dfrac{1}{n}\sum_i \big[y_i\log(\hat p_i)+(1-y_i)\log(1-\hat p_i)\big]$, using predicted probabilities $\hat p_i$ rather than hard class labels
+- when to use: the predicted probabilities themselves matter (risk scores, downstream decision-making), not just the final class call
+- good result: close to 0. log loss punishes confident wrong predictions heavily — predicting $\hat p=0.99$ for a case that turns out negative costs far more than predicting $\hat p=0.6$
 
 ## brier score
 
-- $\text{brier}=\dfrac{1}{n}\sum_i(\hat p_i-y_i)^2$, the mean squared error between predicted probability and the actual outcome (0/1).
-- when to use: checking calibration of predicted probabilities — whether a predicted 70% risk actually corresponds to the event happening about 70% of the time.
-- good result: close to 0 (bounded in $[0,1]$); compare against the brier score of just predicting the base rate for everyone as a baseline. decompose into calibration and refinement/resolution components to see whether poor scores come from miscalibration or poor discrimination.
-- a reliability diagram (predicted probability bucket vs. observed frequency) is the standard graph alongside it: a good model's points sit close to the 45° diagonal.
+- $\text{brier}=\dfrac{1}{n}\sum_i(\hat p_i-y_i)^2$, the mean squared error between predicted probability and the actual outcome (0/1)
+- when to use: checking calibration of predicted probabilities — whether a predicted 70% risk actually corresponds to the event happening about 70% of the time
+- good result: close to 0 (bounded in $[0,1]$); compare against the brier score of just predicting the base rate for everyone as a baseline. decompose into calibration and refinement/resolution components to see whether poor scores come from miscalibration or poor discrimination
+- a reliability diagram (predicted probability bucket vs. observed frequency) is the standard graph alongside it: a good model's points sit close to the 45° diagonal
 
 ## regression metrics (for comparison)
 
@@ -92,13 +92,13 @@ title: "evaluation metrics"
 
 ## choosing a metric
 
-- start from which error is more costly, not from which metric is most common.
-- under class imbalance, accuracy and roc/auc can both look better than the model deserves; check precision, recall, and a precision-recall curve.
-- when probabilities feed a downstream decision, check calibration (brier score, reliability diagram) in addition to discrimination (auc, f1).
-- always report a metric alongside the class balance or base rate it was computed against — a metric value means little on its own.
+- start from which error is more costly, not from which metric is most common
+- under class imbalance, accuracy and roc/auc can both look better than the model deserves; check precision, recall, and a precision-recall curve
+- when probabilities feed a downstream decision, check calibration (brier score, reliability diagram) in addition to discrimination (auc, f1)
+- always report a metric alongside the class balance or base rate it was computed against — a metric value means little on its own
 
 ## references
 
-- [scikit-learn: model evaluation — classification metrics](https://scikit-learn.org/stable/modules/model_evaluation.html).
-- [scikit-learn: roc, precision-recall & calibration curves](https://scikit-learn.org/stable/modules/calibration.html).
-- [google machine learning crash course: classification](https://developers.google.com/machine-learning/crash-course/classification).
+- [scikit-learn: model evaluation — classification metrics](https://scikit-learn.org/stable/modules/model_evaluation.html)
+- [scikit-learn: roc, precision-recall & calibration curves](https://scikit-learn.org/stable/modules/calibration.html)
+- [google machine learning crash course: classification](https://developers.google.com/machine-learning/crash-course/classification)

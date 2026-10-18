@@ -5,17 +5,17 @@ toc: false
 
 how models learn, generalise, and get evaluated.
 
-feature engineering, train/test splits, loss functions, gradient descent, regularisation, residuals & the bias–variance tradeoff, and evaluation metrics are available below; the other topics are still being written.
+train/test splits, feature engineering, loss functions, gradient descent, residuals & the bias–variance tradeoff, regularisation, and evaluation metrics are available below; the other topics are still being written.
 
 ::: {.topic-index}
 
+- [train/test splits](train-test.qmd)
 - [preprocessing](preprocessing.qmd)
 - [feature engineering](feature-engineering.qmd)
-- [train/test splits](train-test.qmd)
 - [loss functions](loss-functions.qmd)
 - [gradient descent](gradient-descent.qmd)
-- [regularisation](regularisation.qmd)
 - [residuals & the bias–variance tradeoff](bias-variance.qmd)
+- [regularisation](regularisation.qmd)
 - [evaluation metrics](evaluation-metrics.qmd)
 
 :::

@@ -4,44 +4,44 @@ title: "feature engineering"
 
 ## missing data
 
-- check how much is missing and why; in omics, an undetected measurement may reflect a detection limit.
-- dropping incomplete rows loses data and may introduce bias; a small missing percentage alone does not make deletion safe.
-- mean, median, or mode imputation is a simple baseline, but can distort variability and relationships.
-- knn imputation uses similar samples; chained-equation methods predict missing values from other features. multiple imputation creates several completed datasets to reflect uncertainty.
-- consider a missingness indicator when the fact that a value is missing may be informative.
+- check how much is missing and why; in omics, an undetected measurement may reflect a detection limit
+- dropping incomplete rows loses data and may introduce bias; a small missing percentage alone does not make deletion safe
+- mean, median, or mode imputation is a simple baseline, but can distort variability and relationships
+- knn imputation uses similar samples; chained-equation methods predict missing values from other features. multiple imputation creates several completed datasets to reflect uncertainty
+- consider a missingness indicator when the fact that a value is missing may be informative
 
 ## categorical variables
 
-- ordinal encoding represents categories with a meaningful order, such as disease stage.
-- one-hot encoding represents unordered categories without imposing a numeric order; many categories can create many columns.
-- target encoding uses target statistics for each category; use cross-fitting within the training data to avoid leakage.
-- embeddings learn compact representations of categories with many possible values.
+- ordinal encoding represents categories with a meaningful order, such as disease stage
+- one-hot encoding represents unordered categories without imposing a numeric order; many categories can create many columns
+- target encoding uses target statistics for each category; use cross-fitting within the training data to avoid leakage
+- embeddings learn compact representations of categories with many possible values
 
 ## scaling & transformations
 
-- standard scaling: subtract the training mean and divide by its standard deviation, $x'=(x-\mu)/\sigma$.
-- min–max scaling: map training values to a chosen range; extreme values can dominate the scale.
-- robust scaling: centre using the median and scale using the interquartile range.
-- log and power transformations can reduce skew; they do not guarantee normally distributed data.
-- scaling matters for distance-based and many regularised or gradient-based models; ordinary decision trees generally do not need it.
+- standard scaling: subtract the training mean and divide by its standard deviation, $x'=(x-\mu)/\sigma$
+- min–max scaling: map training values to a chosen range; extreme values can dominate the scale
+- robust scaling: centre using the median and scale using the interquartile range
+- log and power transformations can reduce skew; they do not guarantee normally distributed data
+- scaling matters for distance-based and many regularised or gradient-based models; ordinary decision trees generally do not need it
 
 ## feature selection & extraction
 
-- filter methods: remove low-variance features or rank them using univariate statistics, such as mutual information.
-- wrapper methods: select subsets using a model, such as recursive feature elimination or forward/backward selection.
-- embedded methods: select features during fitting, such as l1 regularisation; tree importance can inform selection but needs validation.
-- selection keeps original variables; extraction creates new representations, such as [principal components](../dimensionality-reduction/pca.qmd).
+- filter methods: remove low-variance features or rank them using univariate statistics, such as mutual information
+- wrapper methods: select subsets using a model, such as recursive feature elimination or forward/backward selection
+- embedded methods: select features during fitting, such as l1 regularisation; tree importance can inform selection but needs validation
+- selection keeps original variables; extraction creates new representations, such as [principal components](../dimensionality-reduction/pca.qmd)
 
 ## avoiding leakage
 
-- split the data before fitting imputers, encoders, scalers, or feature selectors.
-- learn preprocessing only from the training set, then apply it to validation and test sets.
-- during cross-validation, refit preprocessing within each training fold; a pipeline helps enforce this.
-- related: [curse of dimensionality](../foundations/curse-of-dimensionality.qmd).
+- split the data before fitting imputers, encoders, scalers, or feature selectors
+- learn preprocessing only from the training set, then apply it to validation and test sets
+- during cross-validation, refit preprocessing within each training fold; a pipeline helps enforce this
+- related: [curse of dimensionality](../foundations/curse-of-dimensionality.qmd)
 
 ## references
 
-- [scikit-learn: missing-value imputation](https://scikit-learn.org/stable/modules/impute.html).
-- [scikit-learn: preprocessing](https://scikit-learn.org/stable/modules/preprocessing.html).
-- [scikit-learn: feature selection](https://scikit-learn.org/stable/modules/feature_selection.html).
-- [scikit-learn: avoiding data leakage](https://scikit-learn.org/stable/common_pitfalls.html#data-leakage).
+- [scikit-learn: missing-value imputation](https://scikit-learn.org/stable/modules/impute.html)
+- [scikit-learn: preprocessing](https://scikit-learn.org/stable/modules/preprocessing.html)
+- [scikit-learn: feature selection](https://scikit-learn.org/stable/modules/feature_selection.html)
+- [scikit-learn: avoiding data leakage](https://scikit-learn.org/stable/common_pitfalls.html#data-leakage)

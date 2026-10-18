@@ -4,30 +4,30 @@ title: "curse of dimensionality"
 
 ## samples, features & dimensions
 
-- samples are rows: individual observations, such as patients.
-- features are columns: measurements describing each observation.
-- dimensions are feature axes; a dataset with $n$ samples and $d$ features has shape $(n,d)$.
-- high-dimensional data has many features; this is different from simply having many samples.
+- samples are rows: individual observations, such as patients
+- features are columns: measurements describing each observation
+- dimensions are feature axes; a dataset with $n$ samples and $d$ features has shape $(n,d)$
+- high-dimensional data has many features; this is different from simply having many samples
 
 ## why more dimensions can be difficult
 
-- **sparsity:** maintaining a fixed resolution requires rapidly more data. ten bins per axis create $10^d$ cells: ten in one dimension, but ten billion in ten dimensions.
-- **distance concentration:** with many similarly scaled, weakly dependent features, nearest and farthest distances can become less distinct. this depends on the data distribution and distance metric.
-- **boundary concentration:** for points uniformly distributed in a unit ball, the fraction within the outer 10% of its radius is $1-0.9^d$: about 65% at $d=10$ and 99.997% at $d=100$.
+- **sparsity:** maintaining a fixed resolution requires rapidly more data. ten bins per axis create $10^d$ cells: ten in one dimension, but ten billion in ten dimensions
+- **distance concentration:** with many similarly scaled, weakly dependent features, nearest and farthest distances can become less distinct. this depends on the data distribution and distance metric
+- **boundary concentration:** for points uniformly distributed in a unit ball, the fraction within the outer 10% of its radius is $1-0.9^d$: about 65% at $d=10$ and 99.997% at $d=100$
 
 ## why it matters
 
-- knn, k-means, and dbscan can struggle when distances no longer distinguish useful neighbours or clusters.
-- irrelevant features can obscure signal, increase computation, and encourage overfitting when samples are limited.
-- linear models, kernel methods, and neural networks are not automatically immune; assumptions, regularisation, and sample size still matter.
+- knn, k-means, and dbscan can struggle when distances no longer distinguish useful neighbours or clusters
+- irrelevant features can obscure signal, increase computation, and encourage overfitting when samples are limited
+- linear models, kernel methods, and neural networks are not automatically immune; assumptions, regularisation, and sample size still matter
 
 ## what helps
 
-- remove irrelevant or redundant features using [feature selection](../training-evaluation/feature-engineering.qmd#feature-selection-extraction).
-- consider [dimensionality reduction](../dimensionality-reduction/index.qmd) while checking that useful structure is retained.
-- regularise supervised models and evaluate choices on held-out data.
-- fit learned transformations within training folds to avoid leakage.
+- remove irrelevant or redundant features using [feature selection](../training-evaluation/feature-engineering.qmd#feature-selection-extraction)
+- consider [dimensionality reduction](../dimensionality-reduction/index.qmd) while checking that useful structure is retained
+- regularise supervised models and evaluate choices on held-out data
+- fit learned transformations within training folds to avoid leakage
 
 ## references
 
-- [scikit-learn: nearest neighbours and high-dimensional data](https://scikit-learn.org/stable/modules/neighbors.html).
+- [scikit-learn: nearest neighbours and high-dimensional data](https://scikit-learn.org/stable/modules/neighbors.html)

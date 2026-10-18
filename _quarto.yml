@@ -36,20 +36,20 @@ website:
       - section: "training & evaluation"
         href: notes/training-evaluation/index.qmd
         contents:
+          - href: notes/training-evaluation/train-test.qmd
+            text: "train/test splits"
           - href: notes/training-evaluation/preprocessing.qmd
             text: "preprocessing"
           - href: notes/training-evaluation/feature-engineering.qmd
             text: "feature engineering"
-          - href: notes/training-evaluation/train-test.qmd
-            text: "train/test splits"
           - href: notes/training-evaluation/loss-functions.qmd
             text: "loss functions"
           - href: notes/training-evaluation/gradient-descent.qmd
             text: "gradient descent"
-          - href: notes/training-evaluation/regularisation.qmd
-            text: "regularisation"
           - href: notes/training-evaluation/bias-variance.qmd
             text: "residuals & the bias–variance tradeoff"
+          - href: notes/training-evaluation/regularisation.qmd
+            text: "regularisation"
           - href: notes/training-evaluation/evaluation-metrics.qmd
             text: "evaluation metrics"
       - section: "supervised learning"
