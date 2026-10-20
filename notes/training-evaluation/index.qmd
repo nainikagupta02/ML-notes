@@ -5,7 +5,7 @@ toc: false
 
 how models learn, generalise, and get evaluated.
 
-train/test splits, hyperparameter tuning, feature engineering, correlation & statistical tests, loss functions, gradient descent, residuals & the bias–variance tradeoff, learning curves, regularisation, baseline models, class imbalance, and evaluation metrics are available below; preprocessing is still being written.
+train/test splits, hyperparameter tuning, feature engineering, correlation & statistical tests, loss functions, gradient descent, residuals & the bias–variance tradeoff, learning curves, regularisation, baseline models, ablation studies, class imbalance, and evaluation metrics are available below; preprocessing is still being written.
 
 ::: {.topic-index}
 
@@ -20,6 +20,7 @@ train/test splits, hyperparameter tuning, feature engineering, correlation & sta
 - [learning curves](learning-curves.qmd)
 - [regularisation](regularisation.qmd)
 - [baseline models](baseline-models.qmd)
+- [ablation studies](ablation-studies.qmd)
 - [class imbalance](class-imbalance.qmd)
 - [evaluation metrics](evaluation-metrics.qmd)
 

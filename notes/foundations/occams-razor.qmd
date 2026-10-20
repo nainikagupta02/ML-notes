@@ -12,7 +12,16 @@ title: "occam's razor in ml"
 
 - **sample complexity**: in [pac learning](pac-learning.qmd#sample-complexity), the number of examples needed to generalise reliably grows with the complexity of the hypothesis class ($\ln\lvert\mathcal{h}\rvert$, or vc dimension for infinite classes) — a simpler class needs less data to guarantee low error at the same confidence level, which is a formal reason simpler models generalise better from limited data
 - **minimum description length (mdl)**: formalises occam's razor information-theoretically — prefer the hypothesis $h$ minimising $l(h)+l(d\mid h)$, the number of bits to describe the hypothesis plus the number of bits to describe the data given that hypothesis; a model that fits the training data perfectly but takes many bits to describe (e.g. memorising every point) is penalised against a simpler model with slightly higher error
-- **information criteria** (aic, bic) apply the same idea to model comparison: both subtract a term proportional to the number of parameters from a measure of fit, explicitly trading off fit against complexity rather than picking whichever model fits training data best
+
+## information criteria: aic & bic
+
+- the akaike information criterion directly trades off fit against complexity: $\text{aic}=2k-2\ln\hat l$, where $k$ is the number of fitted parameters and $\hat l$ is the model's maximised likelihood — lower aic is better
+- the bayesian information criterion does the same with a heavier complexity penalty: $\text{bic}=k\ln(n)-2\ln\hat l$, where $n$ is the number of observations
+- both reward a better fit (higher $\hat l$, so more negative $-2\ln\hat l$) while charging a cost per parameter — exactly occam's razor in one formula: a model that adds parameters must improve the fit by more than the added penalty to come out ahead
+- because bic's penalty term $k\ln(n)$ grows with sample size while aic's stays fixed at $2k$, bic penalises extra parameters more heavily as $n$ grows and tends to favour simpler models than aic does on larger datasets
+- only *differences* in aic/bic across candidate models are meaningful — the absolute value on its own says nothing
+- aic and bic require a well-defined likelihood from a model fit by maximum likelihood (linear/logistic regression, other glms); they're cheap to compute once the model is fit, with no refitting or held-out data required, unlike [cross-validation](../training-evaluation/train-test.qmd#cross-validation), which works for any model and loss but costs $k$ refits
+- for certain model classes, aic is asymptotically equivalent to leave-one-out cross-validation — a concrete bridge between this information-theoretic view of model complexity and the empirical, resampling-based view used elsewhere in these notes
 
 ## where it shows up
 
@@ -26,8 +35,10 @@ title: "occam's razor in ml"
 - occam's razor is a bias, not a law — it helps most when the true underlying relationship actually is simple, or close to it; forcing an overly simple model onto a genuinely complex relationship underfits, see [residuals & the bias–variance tradeoff](../training-evaluation/bias-variance.qmd)
 - "simplest that fits" should be judged relative to how much data is available — a more complex model isn't wrong, just riskier without enough data to support it
 - treat it as a heuristic to generate candidates, not a substitute for evaluation: use [cross-validation](../training-evaluation/train-test.qmd#cross-validation) or [learning curves](../training-evaluation/learning-curves.qmd) to check empirically whether the simpler model actually generalises better, rather than assuming it does
+- reach for aic/bic when comparing nested or related glm-style models fit by maximum likelihood and refitting across folds is expensive; reach for cross-validation when comparing arbitrary models/pipelines, or when there's no clean likelihood to work with at all
 
 ## references
 
 - [wikipedia: occam's razor](https://en.wikipedia.org/wiki/Occam%27s_razor)
 - [wikipedia: minimum description length](https://en.wikipedia.org/wiki/Minimum_description_length)
+- [wikipedia: akaike information criterion](https://en.wikipedia.org/wiki/Akaike_information_criterion)

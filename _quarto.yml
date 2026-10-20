@@ -68,6 +68,8 @@ website:
             text: "regularisation"
           - href: notes/training-evaluation/baseline-models.qmd
             text: "baseline models"
+          - href: notes/training-evaluation/ablation-studies.qmd
+            text: "ablation studies"
           - href: notes/training-evaluation/class-imbalance.qmd
             text: "class imbalance"
           - href: notes/training-evaluation/evaluation-metrics.qmd

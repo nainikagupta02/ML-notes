@@ -1,0 +1,46 @@
+---
+title: "ablation studies"
+---
+
+## what an ablation study is
+
+- an ablation study systematically removes or alters one component of a system — a feature, a preprocessing step, a model piece, a loss term, a training trick — and measures the effect on performance, holding everything else fixed
+- it answers "how much is this specific piece actually contributing," not just "does the whole system work"
+
+## why run one
+
+- a complex pipeline that performs well doesn't say which parts are earning their keep — an ablation isolates each piece's individual contribution
+- it separates components that are essential from ones that add little or nothing, guiding where to simplify (see [occam's razor](../foundations/occams-razor.qmd)) and where further effort is actually worth investing
+
+## how to run one
+
+- start from the full system; remove or replace one component at a time, retrain, and re-evaluate with everything else held constant
+- compare each ablated version against both the full model and a [baseline model](baseline-models.qmd) — this shows whether removing a component hurt, and how much that component was contributing relative to doing nothing at all
+- use the same evaluation protocol for every condition — the same cross-validation folds or held-out split, see [train/test splits](train-test.qmd) — so differences reflect the ablation itself, not noise from a different split
+- report results with some sense of variability (across folds or random seeds); a difference within normal run-to-run noise isn't a real effect
+
+## what counts as a component to ablate
+
+- a feature or group of features — does removing a block of related features change performance?
+- a preprocessing step — does a particular imputation strategy or transform matter, see [feature engineering](feature-engineering.qmd)?
+- a model component — a regularisation term, an architectural choice, an ensemble member
+- a loss term — in a multi-term loss, how much does each term individually contribute?
+- a training trick — does early stopping, data augmentation, or a specific hyperparameter choice matter?
+
+## reading the results
+
+- a component whose removal barely changes performance is either redundant with other features/components or genuinely uninformative — check for redundancy with [correlation & statistical tests](statistical-tests.qmd) before concluding it's uninformative
+- a component whose removal substantially hurts performance is validated as necessary and worth protecting in future iterations
+- order matters: removing correlated components one at a time can make each individual removal look unimportant, since the others compensate for it — group components expected to be redundant into a single combined ablation rather than removing them independently
+
+## practical considerations
+
+- ablations multiply the cost of experimentation — one retrain per condition — so prioritise ablating the components that are genuinely uncertain, not everything indiscriminately
+- an ablation is a comparison, not a hypothesis test by itself; pair it with variability across folds or seeds rather than trusting a single-run difference
+- distinct from [feature selection](feature-engineering.qmd#feature-selection--extraction): feature selection automatically searches for the best subset, while an ablation study is a deliberate, fixed set of comparisons meant to build understanding of why a system works, usually reported alongside the final result
+- common in research papers to justify architecture or design choices, but the same logic applies to any ml pipeline with multiple moving pieces — feature engineering choices, preprocessing decisions, ensemble components, and so on
+
+## references
+
+- [wikipedia: ablation (artificial intelligence)](https://en.wikipedia.org/wiki/Ablation_(artificial_intelligence))
+- [scikit-learn: permutation feature importance](https://scikit-learn.org/stable/modules/permutation_importance.html) — a lightweight, single-feature-at-a-time form of ablation
