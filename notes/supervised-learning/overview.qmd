@@ -4,9 +4,9 @@ title: "supervised learning overview"
 
 ## the idea
 
-- learn a mapping from features $x$ to known targets $y$, then predict outcomes for new observations.
-- regression predicts numeric values; classification predicts categories or class probabilities.
-- success means useful performance on unseen data, rather than simply fitting the training examples.
+- learn a mapping from features $x$ to known targets $y$, then predict outcomes for new observations
+- regression predicts numeric values; classification predicts categories or class probabilities
+- success means useful performance on unseen data, rather than simply fitting the training examples
 
 ::: {.table-responsive tabindex="0"}
 
@@ -21,34 +21,58 @@ title: "supervised learning overview"
 
 ::: {.table-responsive tabindex="0"}
 
-| family | core idea | useful starting point / consideration |
-|---|---|---|
-| linear models | weighted combinations of features; ridge and lasso add penalties | fast, interpretable baselines; limited without suitable feature transformations |
-| trees & ensembles | split feature space into regions; forests average randomised trees, while boosting adds sequential corrections | flexible models for tabular data; tune complexity to control overfitting |
-| support vector machines | find a margin-based decision boundary; kernels allow nonlinear relationships | useful for some small or medium high-dimensional datasets; scaling and kernel choice matter |
-| k-nearest neighbours | predict from nearby training observations | simple baseline; sensitive to scaling, dimensionality, and prediction-time cost |
-| naive bayes | combine class probabilities with conditional feature-independence assumptions | efficient for suitable text or count data; probability estimates may need calibration |
-| neural networks | learn layered nonlinear representations | useful for complex inputs such as images and sequences; architecture, data, and compute matter |
-| gaussian processes | place a distribution over functions using a kernel | predictive uncertainty under model assumptions; standard methods can be costly as sample size grows |
+| family | core idea | key hyperparameters | useful starting point / consideration |
+|---|---|---|---|
+| linear models | weighted combination of features; ridge and lasso add penalties | regularisation strength $\lambda$, l1/l2 mix | fast, interpretable baselines; limited without suitable feature transformations — see [linear regression](linear-regression.qmd), [logistic regression](logistic-regression.qmd) |
+| decision trees | split feature space into regions by thresholding one feature at a time | `max_depth`, `min_samples_leaf` | interpretable but high-variance alone — see [decision trees](../trees-ensembles/decision-trees.qmd) |
+| random forests | average many decorrelated trees trained on randomised rows & features | `n_estimators`, `max_features` | strong, low-effort baseline for tabular data — see [random forests](../trees-ensembles/random-forests.qmd) |
+| gradient boosting | sequentially add trees that correct the previous trees' errors | `learning_rate`, `n_estimators`, `max_depth` | often the most accurate option for tabular data; needs more careful tuning — see [gradient boosting](../trees-ensembles/gradient-boosting.qmd) |
+| support vector machines | find a margin-based decision boundary; kernels allow nonlinear relationships | `C`, kernel choice, kernel parameters (e.g. $\gamma$ for rbf) | useful for small/medium, possibly high-dimensional datasets; scaling and kernel choice matter |
+| k-nearest neighbours | predict from nearby training observations | $k$, distance metric, neighbour weighting | simple baseline; sensitive to scaling, dimensionality, and prediction-time cost — see [distance metrics](../foundations/distance-metrics.qmd) |
+| naive bayes | combine per-feature class-conditional probabilities under a feature-independence assumption | distributional variant (gaussian/multinomial/bernoulli), smoothing | efficient for suitable text or count data; probability estimates may need calibration — see [probability basics](../foundations/probability-basics.qmd) |
+| neural networks | learn layered nonlinear representations | depth/width, learning rate, regularisation | useful for complex inputs such as images and sequences; architecture, data, and compute matter |
+| gaussian processes | place a distribution over functions using a kernel | kernel choice & its parameters, noise variance | predictive uncertainty under model assumptions; standard methods can be costly as sample size grows |
 
 :::
 
+## from features to a prediction
+
+- it helps to trace what actually happens to a feature vector $x$ inside each family, rather than treating them as interchangeable black boxes:
+
+::: {.table-responsive tabindex="0"}
+
+| family | trajectory from $x$ to a prediction |
+|---|---|
+| linear & logistic regression | compute one weighted sum of the features — linear regression stops there; logistic regression squashes that sum through a sigmoid into a probability |
+| decision trees | compare one feature to a threshold, branch, repeat down the tree; the prediction is just the mean (regression) or majority class (classification) of whichever leaf $x$ lands in |
+| random forests | run the same tree-trajectory independently many times, each on a randomised subset of rows and features, then average (regression) or vote (classification) across all the trees |
+| gradient boosting | run the same tree-trajectory sequentially — each tree's job is only to predict the error left over by all previous trees — then sum every tree's (scaled) output |
+| k-nearest neighbours | measure $x$'s distance to every training point, keep the $k$ closest, then average or vote among just those — no explicit weights are ever learned |
+| naive bayes | score each class by multiplying together the (assumed-independent) probability of observing each feature value under that class, times the class's prior probability |
+| support vector machines | optionally map $x$ into a higher-dimensional space via a kernel, then check which side of a learned maximum-margin hyperplane it falls on |
+| neural networks | pass $x$ through successive layers of weighted sums and nonlinear activations, each layer learning a new representation, until the final layer outputs the prediction |
+| gaussian processes | treat the unknown function as one draw from a distribution over functions defined by a kernel (a covariance between points), then condition on the training points to get a predictive mean and uncertainty at $x$ |
+
+:::
+
+- this is also where each family's sensitivities come from: trajectories built from weighted sums or distances (linear models, svms, knn, gaussian processes) care about feature scale, see [scaling & transformations](../training-evaluation/feature-engineering.qmd#scaling--transformations); trajectories built from per-feature threshold comparisons (trees and their ensembles) don't
+
 ## a practical workflow
 
-- define the target, prediction time, and metric before choosing a model.
-- split data to reflect deployment: keep repeated observations from the same person together and respect time order when needed.
-- fit [feature engineering](../training-evaluation/feature-engineering.qmd) within training folds to avoid leakage.
-- establish a simple baseline, compare candidates with cross-validation, and tune hyperparameters on training/validation data.
-- evaluate the chosen pipeline once on an untouched test set; inspect errors, calibration when relevant, and performance across important groups.
+- define the target, prediction time, and metric before choosing a model
+- split data to reflect deployment: keep repeated observations from the same person together and respect time order when needed
+- fit [feature engineering](../training-evaluation/feature-engineering.qmd) within training folds to avoid leakage
+- establish a simple baseline, compare candidates with cross-validation, and tune hyperparameters on training/validation data
+- evaluate the chosen pipeline once on an untouched test set; inspect errors, calibration when relevant, and performance across important groups
 
 ## choosing a starting point
 
-- there is no universally best model; compare against a baseline using the same splits and metrics.
-- match the loss and evaluation metric to the task and class balance.
-- use the [bias–variance notes](../training-evaluation/bias-variance.qmd) to think about underfitting and overfitting.
-- explore [linear regression](linear-regression.qmd), [logistic regression](logistic-regression.qmd), or [trees & ensembles](../trees-ensembles/index.qmd) next; individual topic pages are being filled in.
+- there is no universally best model; compare against a baseline using the same splits and metrics
+- match the loss and evaluation metric to the task and class balance
+- use the [bias–variance notes](../training-evaluation/bias-variance.qmd) to think about underfitting and overfitting
+- explore [linear regression](linear-regression.qmd), [logistic regression](logistic-regression.qmd), or [trees & ensembles](../trees-ensembles/index.qmd) next; individual topic pages are being filled in
 
 ## references
 
-- [scikit-learn: supervised learning](https://scikit-learn.org/stable/supervised_learning.html).
-- [scikit-learn: model selection and evaluation](https://scikit-learn.org/stable/model_selection.html).
+- [scikit-learn: supervised learning](https://scikit-learn.org/stable/supervised_learning.html)
+- [scikit-learn: model selection and evaluation](https://scikit-learn.org/stable/model_selection.html)
