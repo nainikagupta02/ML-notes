@@ -2,6 +2,34 @@
 title: "feature engineering"
 ---
 
+## check the distribution before transforming
+
+- before choosing imputation, encoding, or scaling, look at what each feature actually is and how it's shaped — the right transformation depends on both, not on a default pipeline applied to every column the same way
+- plot distributions first: a histogram or kde for continuous features, value counts for categorical ones, and a boxplot or iqr check for outliers; a skewed, heavy-tailed, or multimodal distribution needs different handling than a roughly symmetric one
+- skewness gives a quick numeric read on shape: a long right tail (common in income, lab counts, time-to-event data) often benefits from a log or power transform before it's fed into a model that's sensitive to extreme values — see [scaling & transformations](#scaling--transformations)
+- outliers show up on a boxplot or via z-scores/iqr; decide whether each is a data error (fix or remove) or a genuine extreme value (keep, but prefer robust scaling over standard scaling)
+- check this per feature, not once for the whole dataset — a mix of symmetric, skewed, and categorical columns is the normal case, not the exception
+
+## data type drives preprocessing choices
+
+::: {.table-responsive tabindex="0"}
+
+| data type | examples | typical preprocessing | especially sensitive models |
+|---|---|---|---|
+| continuous, roughly symmetric | height, standardised lab values | standard scaling | distance-based models, regularised linear models, neural networks |
+| continuous, skewed | income, gene expression counts, time-to-event | log/power transform, then scale | same as above — skew distorts distances and gives extreme values outsized influence |
+| ordinal | disease stage, education level | ordinal encoding that preserves order | any model — one-hot encoding would discard the order information |
+| nominal / unordered categorical | blood type, tissue type | one-hot or target encoding | linear and distance-based models need a numeric encoding; tree models can often split on raw categories directly |
+| count data | number of mutations, event counts | log1p transform, or a poisson/negative-binomial loss instead of squared error | ordinary least squares assumes gaussian errors, which small or zero-inflated counts violate |
+| binary | yes/no, case/control | leave as 0/1 | — |
+
+:::
+
+- which model is about to run matters as much as the data itself does: [naive bayes](../supervised-learning/naive-bayes.qmd) assumes a specific distribution per feature (gaussian for continuous features, multinomial for counts) — mismatching that assumption weakens its probability estimates even when the final classification still looks reasonable
+- [linear and logistic regression](../supervised-learning/linear-regression.qmd) don't require normally distributed *features*, only roughly gaussian *residuals* — but a skewed or heavy-tailed feature can still create outsized leverage and a poorly conditioned fit, see [residuals, leverage & influence](bias-variance.qmd#residuals-leverage--influence)
+- distance-based models (k-nearest neighbours, k-means) and anything trained with gradient descent or [regularisation](regularisation.qmd) are directly sensitive to feature scale, since both distance calculations and penalty terms treat every feature's units as comparable — see [distance metrics](../foundations/distance-metrics.qmd#practical-considerations)
+- tree-based models (decision trees, random forests, gradient boosting) split on per-feature thresholds, so monotonic transforms like scaling or log transforms don't change their splits — distributional shape and scale matter far less there than for the models above
+
 ## missing data
 
 - check how much is missing and why; in omics, an undetected measurement may reflect a detection limit
@@ -41,6 +69,7 @@ title: "feature engineering"
 
 ## references
 
+- [scipy: skewness and other distribution statistics](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.skew.html)
 - [scikit-learn: missing-value imputation](https://scikit-learn.org/stable/modules/impute.html)
 - [scikit-learn: preprocessing](https://scikit-learn.org/stable/modules/preprocessing.html)
 - [scikit-learn: feature selection](https://scikit-learn.org/stable/modules/feature_selection.html)
