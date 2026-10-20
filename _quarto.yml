@@ -54,6 +54,8 @@ website:
             text: "preprocessing"
           - href: notes/training-evaluation/feature-engineering.qmd
             text: "feature engineering"
+          - href: notes/training-evaluation/statistical-tests.qmd
+            text: "correlation & statistical tests"
           - href: notes/training-evaluation/loss-functions.qmd
             text: "loss functions"
           - href: notes/training-evaluation/gradient-descent.qmd

@@ -1,0 +1,72 @@
+---
+title: "correlation & statistical tests"
+---
+
+## why check this before modelling
+
+- [checking each feature's distribution](feature-engineering.qmd#check-the-distribution-before-transforming) looks at one column at a time; this step looks at relationships — between features, and between each feature and the target — before committing to a model
+- it catches redundant features, flags assumed relationships worth questioning, and gives a cheap first pass at which features are worth keeping before spending compute on a full model
+
+## correlation between features
+
+- **pearson's r**: measures linear association, $r=\dfrac{\operatorname{cov}(x,y)}{\sigma_x\sigma_y}$, ranges from $-1$ to $1$ — assumes a roughly linear relationship between two continuous variables and is sensitive to outliers
+- **spearman's rho**: rank-based; measures monotonic (not necessarily linear) association, and works for ordinal data — more robust to outliers than pearson
+- **kendall's tau**: also rank-based, generally more robust with small samples or many tied ranks than spearman, at higher computational cost
+- a correlation matrix (often as a heatmap) is the standard way to scan pairwise correlations across many features at once
+- highly correlated feature pairs (roughly $\lvert r\rvert>0.8$–$0.9$, context-dependent) carry mostly redundant information — consider dropping one, combining them, or leaning on [regularisation](regularisation.qmd) (ridge in particular) rather than removing anything by hand
+
+## multicollinearity: variance inflation factor
+
+- the variance inflation factor (vif) quantifies multicollinearity for one feature by regressing it on every other feature: $\text{vif}_j=\dfrac{1}{1-r_j^2}$, where $r_j^2$ is the $r^2$ from that regression
+- a vif above roughly 5–10 is commonly flagged as problematic multicollinearity
+- multicollinearity mainly destabilises coefficient estimates and their interpretation in linear/logistic regression — it usually hurts predictive accuracy far less than it hurts interpretability, see [covariance matrix](../foundations/covariance-matrix.qmd) for why near-singular $x^\top x$ causes this
+
+## correlation & association with the target
+
+::: {.table-responsive tabindex="0"}
+
+| target type | feature type | typical check |
+|---|---|---|
+| continuous | continuous | pearson or spearman correlation |
+| continuous | categorical | anova f-test (does the continuous variable's mean differ across categories) |
+| categorical | continuous | anova f-test (same idea, roles reversed), or compare the feature's distribution per class |
+| categorical | categorical | chi-square test of independence |
+| either | either | mutual information — captures any dependency, not just linear or monotonic, at the cost of not saying direction or size |
+
+:::
+
+## statistical tests cheat sheet
+
+::: {.table-responsive tabindex="0"}
+
+| test | compares | typical use | key assumption |
+|---|---|---|---|
+| pearson's r (+ its t-test) | linear correlation between two continuous variables | is a correlation significantly different from 0 | roughly linear relationship, roughly normal residuals for the significance test |
+| spearman's rho | monotonic correlation, can be ordinal | pearson doesn't fit — nonlinear or ranked data | monotonic relationship |
+| independent t-test | means of a continuous variable between 2 groups | e.g. is a biomarker's average different between treatment and control | normality within each group (or large $n$), roughly equal variances |
+| welch's t-test | same as above | same as t-test, but group variances differ | normality (or large $n$), no equal-variance assumption |
+| mann-whitney u | distributions of a continuous/ordinal variable between 2 groups | non-parametric alternative to the t-test when normality doesn't hold | independence only, no normality needed |
+| anova (f-test) | means of a continuous variable across 3+ groups | comparing a feature's mean across multiple target categories | normality, roughly equal variances across groups |
+| kruskal-wallis | distributions across 3+ groups | non-parametric alternative to anova | no normality assumption |
+| chi-square test of independence | association between two categorical variables | is there a relationship between two categorical features, or a feature and a categorical target | expected cell counts not too small (rule of thumb $\geq5$) |
+| shapiro-wilk | whether a sample looks normally distributed | checking the normality assumption before choosing a parametric test | sensitive to sample size — large samples often reject even trivial deviations |
+| kolmogorov-smirnov | a sample against a reference distribution, or two samples against each other | similar role to shapiro-wilk; also used to compare train/test feature distributions | continuous data |
+| levene's test | equal variance across groups | checking the equal-variance assumption before anova or a standard t-test | — |
+
+:::
+
+- read a p-value as: how surprising this data would be if the null hypothesis were exactly true — not as the probability the null hypothesis is true
+- statistical significance and predictive usefulness are related but distinct: a significant test doesn't guarantee a feature helps a model, and a non-significant one doesn't guarantee it's useless — validate with a model and cross-validation, not a p-value alone, see [train/test splits](train-test.qmd#cross-validation)
+- testing many features at once inflates the chance of a false positive by chance alone (the multiple comparisons problem) — correct with methods like bonferroni or benjamini-hochberg (fdr control) when screening many features
+
+## practical considerations
+
+- choose parametric tests (t-test, anova, pearson) when normality roughly holds and sample size isn't tiny; otherwise prefer the non-parametric alternatives (mann-whitney, kruskal-wallis, spearman) — check normality first with shapiro-wilk or a qq-plot, see [check the distribution before transforming](feature-engineering.qmd#check-the-distribution-before-transforming)
+- compute correlations and run tests using the training fold only, to avoid leaking target information into feature selection — see [avoiding leakage](feature-engineering.qmd#avoiding-leakage)
+- these are fast, cheap pre-screens, not a full feature-selection pipeline — they look at one feature at a time and miss interactions a model might still pick up; pair with the wrapper/embedded methods in [feature selection & extraction](feature-engineering.qmd#feature-selection--extraction) rather than relying on tests alone
+
+## references
+
+- [scipy.stats: statistical tests](https://docs.scipy.org/doc/scipy/reference/stats.html)
+- [statsmodels: variance inflation factor](https://www.statsmodels.org/stable/generated/statsmodels.stats.outliers_influence.variance_inflation_factor.html)
+- [scikit-learn: univariate feature selection](https://scikit-learn.org/stable/modules/feature_selection.html#univariate-feature-selection)

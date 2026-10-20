@@ -55,7 +55,7 @@ title: "feature engineering"
 
 ## feature selection & extraction
 
-- filter methods: remove low-variance features or rank them using univariate statistics, such as mutual information
+- filter methods: remove low-variance features or rank them using univariate statistics, such as correlation with the target or a hypothesis test — see [correlation & statistical tests](statistical-tests.qmd)
 - wrapper methods: select subsets using a model, such as recursive feature elimination or forward/backward selection
 - embedded methods: select features during fitting, such as l1 regularisation; tree importance can inform selection but needs validation
 - selection keeps original variables; extraction creates new representations, such as [principal components](../dimensionality-reduction/pca.qmd)
