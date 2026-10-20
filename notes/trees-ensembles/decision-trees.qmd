@@ -2,24 +2,40 @@
 title: "decision trees"
 ---
 
-[not yet written]{.note-status}
-
 ## intuition
 
-[notes to come.]{.note-placeholder}
+- a decision tree recursively splits the data by asking yes/no questions about features, aiming to make each resulting group as "pure" as possible
+- geometrically, a tree draws axis-aligned regions in feature space — every split is a horizontal or vertical cut on one feature; predictions are constant within each resulting region
+- the algorithm is greedy: at each node it picks the single best split given everything split so far, and never revisits that choice — fast to fit, but not guaranteed to find the globally optimal tree
 
-## maths
+## choosing a split
 
-[equations and explanations to come.]{.note-placeholder}
+::: {.table-responsive tabindex="0"}
 
-## example
+| | regression | classification |
+|---|---|---|
+| predicts | a number | a class |
+| leaf value | mean of $y$ in the region | majority class in the region |
+| split criterion | variance (mse) reduction | gini impurity or entropy reduction |
 
-[a worked example, figure, or code snippet to come.]{.note-placeholder}
+:::
+
+- **classification**: gini impurity at a node with $k$ classes is $\text{gini}=1-\sum_k p_k^2$, where $p_k$ is the fraction of samples in class $k$ — a pure node (one class only) has gini $=0$. entropy is $h=-\sum_k p_k\log_2 p_k$. information gain is the parent's impurity minus the weighted average impurity of the children; the split chosen is whichever maximises information gain
+- **regression**: a split is scored by how much it reduces variance (mse) within the resulting children compared to the parent — the chosen split maximises that reduction
+- at each node, every feature and candidate threshold is tried, the criterion computed, and the best one kept — this is roughly $O(n\cdot p\cdot\log n)$ per level, which gets expensive on wide or very large data
+
+## stopping criteria
+
+- common stopping rules: a maximum depth, a minimum number of samples per leaf, a minimum information gain to justify a split, or simply splitting until every leaf is pure
+- without a stopping rule, a tree keeps splitting until every leaf holds a single point — a textbook case of [overfitting / high variance](../training-evaluation/bias-variance.qmd#recognising-underfitting--overfitting): perfect training accuracy, unstable predictions on new data
 
 ## practical considerations
 
-[assumptions, evaluation, and common pitfalls to come.]{.note-placeholder}
+- a single tree is intuitive and interpretable — every prediction can be read off as a sequence of yes/no questions — but it's brittle: small changes in the training data can produce a noticeably different tree (high variance). this is exactly what [random forests](random-forests.qmd) and [gradient boosting](gradient-boosting.qmd) are built to fix, by combining many trees rather than relying on one
+- trees split on raw feature values and thresholds, so monotonic transforms (scaling, log transforms) don't change the resulting splits — consistent with tree-based models being scale-insensitive, see [data type drives preprocessing choices](../training-evaluation/feature-engineering.qmd#data-type-drives-preprocessing-choices)
+- trees capture non-linear relationships and feature interactions automatically, without the manual feature engineering (polynomial terms, interaction terms) that [linear](../supervised-learning/linear-regression.qmd) or [logistic](../supervised-learning/logistic-regression.qmd) regression would need to do the same
 
 ## references
 
-[sources to come.]{.note-placeholder}
+- [scikit-learn: decision trees](https://scikit-learn.org/stable/modules/tree.html)
+- [stanford cs229: decision trees](https://cs229.stanford.edu/notes2020spring/cs229-notes-dt.pdf)

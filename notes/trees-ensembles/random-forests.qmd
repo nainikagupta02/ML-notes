@@ -2,24 +2,49 @@
 title: "random forests"
 ---
 
-[not yet written]{.note-status}
-
 ## intuition
 
-[notes to come.]{.note-placeholder}
+- a single [decision tree](decision-trees.qmd) memorises training data — low bias, high variance. the fix: train many trees on randomised versions of the data and features, then average their predictions
+- two sources of randomness decorrelate the trees:
+  1. **bagging** (bootstrap aggregating) — each tree trains on a bootstrap sample: $n$ rows drawn with replacement from the training set
+  2. **feature randomness** — at each split, only a random subset of features is considered, not all of them
 
-## maths
+## bootstrap sampling & out-of-bag error
 
-[equations and explanations to come.]{.note-placeholder}
+- sampling with replacement means a bootstrap sample of size $n$ drawn from $n$ points contains, on average, about 63.2% of the unique original points; the remaining $\approx$36.8%, never selected for that tree, form its **out-of-bag (oob)** set
+- each tree's oob set works like a built-in validation set for that tree — averaging oob error across all trees gives a performance estimate without a separate held-out split, see [train/test splits](../training-evaluation/train-test.qmd)
 
-## example
+## why averaging reduces variance
 
-[a worked example, figure, or code snippet to come.]{.note-placeholder}
+- if each tree has variance $\sigma^2$ and the trees are perfectly correlated ($\rho=1$), averaging them changes nothing — the ensemble has the same variance as a single tree
+- if the trees are decorrelated ($\rho<1$), the ensemble's variance is $\operatorname{var}(\text{avg})=\rho\sigma^2+\dfrac{(1-\rho)\sigma^2}{b}$ for $b$ trees — as $b\to\infty$ this approaches $\rho\sigma^2$, strictly less than a single tree's variance
+- feature randomness is what keeps $\rho$ low: without it, every tree would tend to split on the same dominant features first and end up highly correlated, capping how much averaging can help — this is the core trick behind random forests
+
+## key hyperparameters
+
+::: {.table-responsive tabindex="0"}
+
+| hyperparameter | controls | typical guidance |
+|---|---|---|
+| `n_estimators` (number of trees, $b$) | ensemble size | more trees reduce variance with diminishing returns; rarely overfits by itself |
+| `max_features` | size of the random feature subset considered at each split | $\sqrt p$ for classification, $p/3$ for regression are common defaults |
+| `max_depth` | depth of each individual tree | deeper trees fit more per tree, raising that tree's variance — offset by averaging across trees |
+| `min_samples_leaf` | minimum points per leaf | larger values smooth predictions and reduce overfitting of individual trees |
+
+:::
+
+## prediction
+
+- regression: average the predictions across all $b$ trees
+- classification: majority vote across trees, or average each tree's predicted class probabilities
 
 ## practical considerations
 
-[assumptions, evaluation, and common pitfalls to come.]{.note-placeholder}
+- random forests are a strong, low-effort baseline — they rarely overfit badly even with many trees and default settings, unlike a single deep tree left unchecked, see [bias-variance tradeoff](../training-evaluation/bias-variance.qmd)
+- feature importance (e.g. mean decrease in impurity) is a common output, but impurity-based importance is biased toward high-cardinality features; permutation importance is more reliable, see [correlation & statistical tests](../training-evaluation/statistical-tests.qmd) for other ways to screen features
+- random forests train trees independently and in parallel, unlike [gradient boosting](gradient-boosting.qmd), which fits trees sequentially — easier to parallelise, but generally needs more trees to match boosting's accuracy at a comparable budget
 
 ## references
 
-[sources to come.]{.note-placeholder}
+- [scikit-learn: random forests](https://scikit-learn.org/stable/modules/ensemble.html#random-forests)
+- [breiman (2001): random forests](https://link.springer.com/article/10.1023/A:1010933404324)

@@ -5,7 +5,7 @@ toc: false
 
 decision trees and methods that combine them.
 
-these topics are planned; each page is ready to be filled in.
+decision trees, random forests, and gradient boosting are available below; the overview is still being written.
 
 ::: {.topic-index}
 

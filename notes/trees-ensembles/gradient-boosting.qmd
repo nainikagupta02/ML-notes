@@ -2,24 +2,65 @@
 title: "gradient boosting"
 ---
 
-[not yet written]{.note-status}
-
 ## intuition
 
-[notes to come.]{.note-placeholder}
+- a fundamentally different way to build a tree ensemble: instead of training many trees independently in parallel and averaging ([random forests](random-forests.qmd)), boosting builds trees **sequentially**, where each new tree corrects the mistakes of everything that came before it
+- analogy: one doctor who keeps learning from their own mistakes over time, versus a panel of independent doctors voting
 
-## maths
+## training, step by step
 
-[equations and explanations to come.]{.note-placeholder}
+1. start with a simple initial prediction (e.g. the mean of $y$)
+2. look at the current errors (residuals)
+3. fit a small tree to predict those residuals
+4. add that tree's predictions, scaled by a learning rate, to the running total
+5. repeat — each new tree targets whatever error remains after all previous trees
 
-## example
+- the final prediction is the initial prediction plus the sum of every tree's scaled correction
 
-[a worked example, figure, or code snippet to come.]{.note-placeholder}
+## the math: gradient descent in function space
+
+- gradient boosting minimises a loss $l(y,f(x))$ by repeatedly adding a new tree $h_m$ that points in the direction of steepest descent: $f_m(x)=f_{m-1}(x)+\eta\cdot h_m(x)$
+- $h_m$ is fit to the negative gradient of the loss — the **pseudo-residuals** — $r_i=-\dfrac{\partial l}{\partial f(x_i)}$
+- for squared error loss (regression), these pseudo-residuals are literally the leftover error $y_i-f_{m-1}(x_i)$; for log loss (classification) they're a more complex function of the predicted probabilities, but the same principle holds — see [loss functions](../training-evaluation/loss-functions.qmd)
+- this directly parallels [gradient descent](../training-evaluation/gradient-descent.qmd)'s update rule, just in "function space" (adding trees) rather than parameter space (adjusting weights)
+- $\eta$, the **learning rate** (or shrinkage), scales how much each new tree's correction counts — a smaller learning rate means each tree contributes less, requiring more trees but usually generalising better
+
+## controlling overfitting
+
+- gradient boosting attacks bias — sequentially driving down error — where random forests attack variance through averaging, see [bias-variance tradeoff](../training-evaluation/bias-variance.qmd); left unchecked, that bias-chasing can itself overfit, so boosting leans on its own regularisation:
+  - **learning rate** ($\eta$): smaller values shrink each tree's contribution, trading more trees for better generalisation
+  - **number of trees** (`n_estimators`): more trees keep reducing training error, but can eventually overfit without a small enough learning rate
+  - **tree depth**: shallow trees (a few levels, sometimes just "stumps") per round, since each tree only needs to capture a small correction
+  - **subsampling**: training each round's tree on a random subset of rows and/or columns, similar in spirit to random forests' randomness
+- **early stopping** is the standard practical trick: train while watching validation loss after each added tree, and stop once it stops improving — this both prevents overfitting and auto-selects the number of trees, avoiding a separate search over `n_estimators`, see [hyperparameter tuning](../training-evaluation/hyperparameter-tuning.qmd) and [learning curves](../training-evaluation/learning-curves.qmd)
+
+## xgboost vs lightgbm
+
+::: {.table-responsive tabindex="0"}
+
+| | xgboost | lightgbm |
+|---|---|---|
+| tree growth | level-wise (breadth-first, balanced trees) | leaf-wise (always splits the leaf with the highest loss reduction) |
+| split finding | exact greedy; uses second-order gradients (the hessian) for better convergence | histogram-based approximate splits (binned feature values), plus gradient-based one-side sampling (goss) |
+| speed | slower | faster, especially on large datasets |
+| overfitting risk | lower by default | higher if not controlled, due to deeper, more irregular trees |
+
+:::
+
+## when to use which
+
+- a single [decision tree](decision-trees.qmd) only when interpretability is the priority and every decision needs to be explainable to a non-technical audience
+- [random forests](random-forests.qmd) as a strong, low-effort baseline — hard to badly overfit, minimal tuning required
+- gradient boosting (xgboost/lightgbm) when maximum predictive performance matters and there's time to tune it; lightgbm specifically for very large datasets, where histogram binning and leaf-wise growth make it substantially faster
 
 ## practical considerations
 
-[assumptions, evaluation, and common pitfalls to come.]{.note-placeholder}
+- boosted trees are more sensitive to their hyperparameters than random forests — learning rate, tree depth, and number of trees interact, so tune them together rather than independently, see [hyperparameter tuning](../training-evaluation/hyperparameter-tuning.qmd)
+- use early stopping against a validation set, not the test set — exactly like any other hyperparameter choice, see [train/test splits](../training-evaluation/train-test.qmd)
+- as with random forests, feature importance is available but impurity-based importance can be biased toward high-cardinality features
 
 ## references
 
-[sources to come.]{.note-placeholder}
+- [scikit-learn: gradient boosting](https://scikit-learn.org/stable/modules/ensemble.html#gradient-boosting)
+- [xgboost documentation](https://xgboost.readthedocs.io/en/stable/)
+- [lightgbm documentation](https://lightgbm.readthedocs.io/en/stable/)
