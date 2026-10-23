@@ -37,7 +37,7 @@ title: "ablation studies"
 
 - ablations multiply the cost of experimentation — one retrain per condition — so prioritise ablating the components that are genuinely uncertain, not everything indiscriminately
 - an ablation is a comparison, not a hypothesis test by itself; pair it with variability across folds or seeds rather than trusting a single-run difference
-- distinct from [feature selection](feature-engineering.qmd#feature-selection--extraction): feature selection automatically searches for the best subset, while an ablation study is a deliberate, fixed set of comparisons meant to build understanding of why a system works, usually reported alongside the final result
+- distinct from [feature selection](feature-engineering.qmd#feature-selection-extraction): feature selection automatically searches for the best subset, while an ablation study is a deliberate, fixed set of comparisons meant to build understanding of why a system works, usually reported alongside the final result
 - common in research papers to justify architecture or design choices, but the same logic applies to any ml pipeline with multiple moving pieces — feature engineering choices, preprocessing decisions, ensemble components, and so on
 
 ## references

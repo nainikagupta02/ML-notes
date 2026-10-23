@@ -26,7 +26,7 @@ title: "occam's razor in ml"
 ## where it shows up
 
 - [regularisation](../training-evaluation/regularisation.qmd) directly implements occam's razor: penalising large weights (or nonzero weights, for l1) is a concrete way of preferring the simplest model consistent with the data
-- feature selection seeks the smallest sufficient set of features rather than using every available one — see [feature selection & extraction](../training-evaluation/feature-engineering.qmd#feature-selection--extraction)
+- feature selection seeks the smallest sufficient set of features rather than using every available one — see [feature selection & extraction](../training-evaluation/feature-engineering.qmd#feature-selection-extraction)
 - model selection: preferring a lower polynomial degree, a shallower tree, or fewer hidden units when accuracy is comparable across choices
 - [baseline models](../training-evaluation/baseline-models.qmd) are the extreme version of this — always check whether a trivially simple model does almost as well before justifying something complex
 

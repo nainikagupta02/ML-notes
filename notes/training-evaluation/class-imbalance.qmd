@@ -12,7 +12,7 @@ title: "class imbalance"
 
 - a model can achieve high accuracy by mostly or entirely predicting the majority class, without learning anything about the minority class — see [baseline models](baseline-models.qmd)
 - many learning algorithms implicitly minimise overall error, so they're naturally biased toward getting the majority class right, since that's where most of the loss comes from
-- standard threshold-based metrics and even roc/auc can look better than the model deserves under heavy imbalance — see [evaluation metrics](evaluation-metrics.qmd#roc-curve--auc)
+- standard threshold-based metrics and even roc/auc can look better than the model deserves under heavy imbalance — see [evaluation metrics](evaluation-metrics.qmd#roc-curve-auc)
 
 ## resampling approaches
 
@@ -31,7 +31,7 @@ title: "class imbalance"
 ## algorithm-level approaches
 
 - class weights: penalise mistakes on the minority class more heavily in the loss function, instead of changing the data (e.g. `class_weight="balanced"` in scikit-learn)
-- threshold adjustment: many classifiers output a probability; moving the decision threshold away from 0.5 trades precision for recall (or vice versa) without retraining — read off the right threshold from a [precision-recall curve](evaluation-metrics.qmd#precision-recall-curve--average-precision)
+- threshold adjustment: many classifiers output a probability; moving the decision threshold away from 0.5 trades precision for recall (or vice versa) without retraining — read off the right threshold from a [precision-recall curve](evaluation-metrics.qmd#precision-recall-curve-average-precision)
 - anomaly/novelty detection framings treat the minority class as "rare/abnormal" rather than as a standard classification target, when it's extremely rare
 
 ## evaluation under imbalance

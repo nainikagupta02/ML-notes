@@ -63,7 +63,7 @@ title: "correlation & statistical tests"
 
 - choose parametric tests (t-test, anova, pearson) when normality roughly holds and sample size isn't tiny; otherwise prefer the non-parametric alternatives (mann-whitney, kruskal-wallis, spearman) — check normality first with shapiro-wilk or a qq-plot, see [check the distribution before transforming](feature-engineering.qmd#check-the-distribution-before-transforming)
 - compute correlations and run tests using the training fold only, to avoid leaking target information into feature selection — see [avoiding leakage](feature-engineering.qmd#avoiding-leakage)
-- these are fast, cheap pre-screens, not a full feature-selection pipeline — they look at one feature at a time and miss interactions a model might still pick up; pair with the wrapper/embedded methods in [feature selection & extraction](feature-engineering.qmd#feature-selection--extraction) rather than relying on tests alone
+- these are fast, cheap pre-screens, not a full feature-selection pipeline — they look at one feature at a time and miss interactions a model might still pick up; pair with the wrapper/embedded methods in [feature selection & extraction](feature-engineering.qmd#feature-selection-extraction) rather than relying on tests alone
 
 ## references
 

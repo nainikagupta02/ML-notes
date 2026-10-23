@@ -6,7 +6,7 @@ title: "feature engineering"
 
 - before choosing imputation, encoding, or scaling, look at what each feature actually is and how it's shaped — the right transformation depends on both, not on a default pipeline applied to every column the same way
 - plot distributions first: a histogram or kde for continuous features, value counts for categorical ones, and a boxplot or iqr check for outliers; a skewed, heavy-tailed, or multimodal distribution needs different handling than a roughly symmetric one
-- skewness gives a quick numeric read on shape: a long right tail (common in income, lab counts, time-to-event data) often benefits from a log or power transform before it's fed into a model that's sensitive to extreme values — see [scaling & transformations](#scaling--transformations)
+- skewness gives a quick numeric read on shape: a long right tail (common in income, lab counts, time-to-event data) often benefits from a log or power transform before it's fed into a model that's sensitive to extreme values — see [scaling & transformations](#scaling-transformations)
 - outliers show up on a boxplot or via z-scores/iqr; decide whether each is a data error (fix or remove) or a genuine extreme value (keep, but prefer robust scaling over standard scaling)
 - check this per feature, not once for the whole dataset — a mix of symmetric, skewed, and categorical columns is the normal case, not the exception
 
@@ -26,7 +26,7 @@ title: "feature engineering"
 :::
 
 - which model is about to run matters as much as the data itself does: [naive bayes](../supervised-learning/naive-bayes.qmd) assumes a specific distribution per feature (gaussian for continuous features, multinomial for counts) — mismatching that assumption weakens its probability estimates even when the final classification still looks reasonable
-- [linear and logistic regression](../supervised-learning/linear-regression.qmd) don't require normally distributed *features*, only roughly gaussian *residuals* — but a skewed or heavy-tailed feature can still create outsized leverage and a poorly conditioned fit, see [residuals, leverage & influence](bias-variance.qmd#residuals-leverage--influence)
+- [linear and logistic regression](../supervised-learning/linear-regression.qmd) don't require normally distributed *features*, only roughly gaussian *residuals* — but a skewed or heavy-tailed feature can still create outsized leverage and a poorly conditioned fit, see [residuals, leverage & influence](bias-variance.qmd#residuals-leverage-influence)
 - distance-based models (k-nearest neighbours, k-means) and anything trained with gradient descent or [regularisation](regularisation.qmd) are directly sensitive to feature scale, since both distance calculations and penalty terms treat every feature's units as comparable — see [distance metrics](../foundations/distance-metrics.qmd#practical-considerations)
 - tree-based models (decision trees, random forests, gradient boosting) split on per-feature thresholds, so monotonic transforms like scaling or log transforms don't change their splits — distributional shape and scale matter far less there than for the models above
 
@@ -65,7 +65,22 @@ title: "feature engineering"
 - split the data before fitting imputers, encoders, scalers, or feature selectors
 - learn preprocessing only from the training set, then apply it to validation and test sets
 - during cross-validation, refit preprocessing within each training fold; a pipeline helps enforce this
+- **group/entity leakage**: if the same patient, sample, or site contributes more than one row (repeated measurements, multiple scans, technical replicates), a plain random split can put some of that entity's rows in training and others in the test set — the model then partly "recognises" the entity rather than generalising, and test performance is inflated
+- split by entity (patient id, sample id, site) rather than by row whenever rows aren't independent — see [train/test splits](train-test.qmd) and scikit-learn's `GroupKFold`/`GroupShuffleSplit` for the mechanics
+- an **external validation cohort** — data from a different time period, site, or source than training, never touched until the very end — is the strongest check against both leakage and overfitting to one population's quirks; a model that holds up on a well-constructed internal test split can still fail here if the split missed a subtler leakage path (e.g. entities split correctly, but training and test were still collected under the same protocol/instrument/population)
+- a sharp gap between strong cross-validation performance and much weaker external-cohort performance usually points to one of: leaked entities, leaked features (something only knowable after the fact), or a real distribution shift between the two populations — distinguish leakage (an error in the evaluation) from shift (a real difference the model needs to cope with) before concluding which one it is, see [batch effects & distribution shift over time](#batch-effects-distribution-shift-over-time)
 - related: [curse of dimensionality](../foundations/curse-of-dimensionality.qmd)
+
+## batch effects & distribution shift over time
+
+- a batch effect is systematic, non-biological variation introduced by *when* or *how* data was collected — a different sequencing run, reagent lot, instrument, or processing day — rather than by the thing actually being measured
+- batch effects are a data-quality problem on their own, but become a **confounding** problem when batch correlates with the outcome — e.g. all the disease cases happened to be run on one day and all the controls on another, so the model can "detect disease" by detecting the batch instead
+- detect it before modelling: colour a pca or umap plot of the features by batch/run/site, or compare feature distributions across batches with a simple hypothesis test — see [correlation & statistical tests](statistical-tests.qmd); clustering by batch rather than by the label of interest is the warning sign
+- correct it by including batch as a covariate (for a linear/glm-style model), explicit batch-correction methods (e.g. combat for omics data), or — more simply — ensuring batch is balanced across the classes/outcomes being compared in the first place, which prevents the confound rather than statistically adjusting for it afterward
+- **psi (population stability index)** is the standard metric for whether a feature's distribution has shifted between a reference population and a new one — a new batch, a new time window, a new site: $\text{psi}=\sum_i(p_i-q_i)\ln\dfrac{p_i}{q_i}$, summed over bins $i$, where $p_i$ and $q_i$ are the reference and current proportions in each bin
+- common rule-of-thumb bands: psi $<0.1$ no significant shift, $0.1$–$0.25$ moderate shift worth investigating, $>0.25$ substantial shift — these thresholds are conventions, not universal laws, and should be checked against how much shift actually changes model performance
+- psi plays the same role here that the ks test plays for continuous distributions (see the [data drift notes](https://nainikagupta02.github.io/notes/mlops/notes/monitoring/drift.html) in the mlops notebook) — both ask "has this distribution moved," psi via binned proportions, ks via the empirical cdf
+- monitor control samples (known, stable material run alongside real samples) across batches as a sensitivity check independent of any particular feature — if a control's measured values drift, the instrument or protocol has drifted, regardless of what any one feature's psi says
 
 ## references
 
@@ -74,3 +89,5 @@ title: "feature engineering"
 - [scikit-learn: preprocessing](https://scikit-learn.org/stable/modules/preprocessing.html)
 - [scikit-learn: feature selection](https://scikit-learn.org/stable/modules/feature_selection.html)
 - [scikit-learn: avoiding data leakage](https://scikit-learn.org/stable/common_pitfalls.html#data-leakage)
+- [scikit-learn: group-aware cross-validation](https://scikit-learn.org/stable/modules/cross_validation.html#cross-validation-iterators-for-grouped-data)
+- [sva/combat: batch effect correction for genomic data](https://bioconductor.org/packages/release/bioc/html/sva.html)

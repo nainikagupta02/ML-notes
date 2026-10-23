@@ -25,9 +25,9 @@ title: "evaluation metrics"
 - when not to use: imbalanced classes. predicting "healthy" for everyone in a dataset that is 95% healthy gives 95% accuracy while catching zero disease cases
 - good result: close to 1, but only meaningful alongside the class balance and at least one of precision/recall
 
-## precision
+## precision (positive predictive value, ppv)
 
-- $\text{precision}=\dfrac{tp}{tp+fp}$, of everything predicted positive, the fraction that actually is
+- $\text{precision}=\text{ppv}=\dfrac{tp}{tp+fp}$, of everything predicted positive, the fraction that actually is — "precision" in ml papers and "ppv" in clinical ones are the same formula
 - when to use: false positives are expensive — flagging a healthy patient for an invasive follow-up, marking legitimate email as spam
 - good result: close to 1. a low precision means many of the positive calls are false alarms
 
@@ -43,6 +43,20 @@ title: "evaluation metrics"
 - $\text{specificity}=\dfrac{tn}{tn+fp}$, of everything actually negative, the fraction correctly called negative
 - when to use: alongside recall when both classes matter — e.g. a screening test needs to know it isn't crying wolf on healthy people as well as catching the sick ones
 - good result: close to 1, paired with high recall. a test with high recall but low specificity generates many false alarms
+
+## negative predictive value (npv)
+
+- $\text{npv}=\dfrac{tn}{tn+fn}$, of everything predicted negative, the fraction that actually is — the mirror image of precision/ppv, but for the negative class
+- when to use: alongside npv's positive-side counterpart whenever a negative result needs to be trustworthy, e.g. ruling a patient out and sending them home without further testing
+- good result: close to 1. a low npv means a "negative" result still carries real risk of disease
+
+## why ppv & npv depend on prevalence (and sensitivity/specificity don't)
+
+- sensitivity and specificity are properties of the test alone: they're computed separately within the diseased and healthy populations, so they don't change when the mix of diseased-to-healthy people being tested changes
+- ppv and npv are properties of the test *and* the population it's applied to: the same test gives a very different ppv when screening a population where the disease is rare versus one where it's common
+- this is a direct application of [bayes' theorem](../foundations/probability-basics.qmd#bayes-theorem): $\text{ppv}=P(\text{disease}\mid\text{positive})=\dfrac{P(\text{positive}\mid\text{disease})\,P(\text{disease})}{P(\text{positive})}$ — the prior $P(\text{disease})$ (prevalence) directly scales the result
+- **worked example**: a test with 80% sensitivity and 80% specificity, used in a population with 5% prevalence. out of 1,000 people: 50 have the disease, 950 don't. true positives $=0.8\times50=40$; false positives $=0.2\times950=190$. $\text{ppv}=\dfrac{40}{40+190}\approx0.17$ — only about 17% of positive results are real, even though the test looks "80/80" on paper
+- the lower the prevalence, the more false positives pile up relative to true positives at a fixed sensitivity/specificity — this is exactly why population-wide screening for a rare condition needs either a very high-specificity test or a confirmatory second test, and why the same model can look excellent in a disease-enriched research cohort and far less useful in a general screening population
 
 ## f1 score
 
@@ -80,6 +94,15 @@ title: "evaluation metrics"
 - good result: close to 0 (bounded in $[0,1]$); compare against the brier score of just predicting the base rate for everyone as a baseline. decompose into calibration and refinement/resolution components to see whether poor scores come from miscalibration or poor discrimination
 - a reliability diagram (predicted probability bucket vs. observed frequency) is the standard graph alongside it: a good model's points sit close to the 45° diagonal
 
+## fixing miscalibration
+
+- a model can discriminate well (high auc — it ranks positives above negatives) while still being miscalibrated (its predicted probabilities don't match observed frequencies) — these are separate properties, and fixing one doesn't automatically fix the other
+- **platt scaling**: fits a 1-d logistic regression from the model's raw scores to calibrated probabilities ($\hat p_{\text{calibrated}}=\sigma(a\cdot\text{score}+b)$); simple, works well with limited calibration data, but assumes the miscalibration has a sigmoid shape
+- **isotonic regression**: fits an arbitrary monotonic (non-decreasing) mapping from raw scores to calibrated probabilities; more flexible than platt scaling, but needs more data to avoid overfitting the calibration curve itself
+- always fit the calibration mapping on a held-out split (or via cross-validation), never on the same data used to fit the model — calibrating on training data just reproduces its overconfidence, see [train/test splits](train-test.qmd)
+- recalibration changes predicted probabilities, not the model's ranking of examples — auc is unaffected, but brier score, log loss, and the reliability diagram should improve
+- refit or re-check calibration periodically in production: a model calibrated on one population or time period can drift out of calibration even if its discrimination (auc) holds up, see [batch effects & distribution shift over time](feature-engineering.qmd#batch-effects-distribution-shift-over-time)
+
 ## regression metrics (for comparison)
 
 ::: {.table-responsive tabindex="0"}
@@ -107,4 +130,5 @@ title: "evaluation metrics"
 
 - [scikit-learn: model evaluation — classification metrics](https://scikit-learn.org/stable/modules/model_evaluation.html)
 - [scikit-learn: roc, precision-recall & calibration curves](https://scikit-learn.org/stable/modules/calibration.html)
+- [scikit-learn: probability calibration (platt scaling & isotonic regression)](https://scikit-learn.org/stable/modules/calibration.html#calibrating-a-classifier)
 - [google machine learning crash course: classification](https://developers.google.com/machine-learning/crash-course/classification)

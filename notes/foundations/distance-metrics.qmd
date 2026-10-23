@@ -18,13 +18,13 @@ title: "distance metrics"
 | minkowski | $\big(\sum_i\lvert x_i-y_i\rvert^p\big)^{1/p}$ | generalises euclidean ($p=2$) and manhattan ($p=1$) |
 | cosine distance | $1-\dfrac{x\cdot y}{\lVert x\rVert\lVert y\rVert}$ | measures angle, not magnitude; common for text/embeddings |
 | hamming | fraction of positions where $x_i\neq y_i$ | for categorical or binary features |
-| mahalanobis | $\sqrt{(x-y)^\top s^{-1}(x-y)}$ | accounts for feature scale and correlation via the covariance matrix $s$ — see [covariance matrix](covariance-matrix.qmd#geometry--mahalanobis-distance) |
+| mahalanobis | $\sqrt{(x-y)^\top s^{-1}(x-y)}$ | accounts for feature scale and correlation via the covariance matrix $s$ — see [covariance matrix](covariance-matrix.qmd#geometry-mahalanobis-distance) |
 
 :::
 
 ## choosing a metric
 
-- euclidean distance assumes features are on comparable, roughly independent scales — standardise features first (see [feature engineering](../training-evaluation/feature-engineering.qmd#scaling--transformations)), or use mahalanobis distance, which builds the correlation structure in directly
+- euclidean distance assumes features are on comparable, roughly independent scales — standardise features first (see [feature engineering](../training-evaluation/feature-engineering.qmd#scaling-transformations)), or use mahalanobis distance, which builds the correlation structure in directly
 - cosine distance is preferred when only the direction of a vector matters, not its length — common for high-dimensional sparse data like text (tf-idf) or learned embeddings, where raw magnitude can reflect document length rather than meaning
 - manhattan distance is often more robust in high dimensions than euclidean, since it accumulates absolute rather than squared differences
 - hamming distance is the natural choice for categorical or binary features, where "how far apart" only makes sense as "how many positions differ"

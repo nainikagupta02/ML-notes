@@ -42,9 +42,12 @@ title: "random forests"
 
 - random forests are a strong, low-effort baseline — they rarely overfit badly even with many trees and default settings, unlike a single deep tree left unchecked, see [bias-variance tradeoff](../training-evaluation/bias-variance.qmd)
 - feature importance (e.g. mean decrease in impurity) is a common output, but impurity-based importance is biased toward high-cardinality features; permutation importance is more reliable, see [correlation & statistical tests](../training-evaluation/statistical-tests.qmd) for other ways to screen features
+- **shap** (shapley additive explanations) goes further: instead of one importance score per feature for the whole model, it gives a per-prediction, per-feature contribution, grounded in game-theoretic shapley values — useful when the question is "why did the model flag *this* patient," not just "which features matter on average" [shap documentation](https://shap.readthedocs.io/en/latest/)
+- shap values are additive — they sum to the difference between a prediction and the model's average output — which is what makes individual-prediction explanations like "feature x pushed this patient's risk score up by 0.12" meaningful; plain feature importance can't make that kind of statement
 - random forests train trees independently and in parallel, unlike [gradient boosting](gradient-boosting.qmd), which fits trees sequentially — easier to parallelise, but generally needs more trees to match boosting's accuracy at a comparable budget
 
 ## references
 
 - [scikit-learn: random forests](https://scikit-learn.org/stable/modules/ensemble.html#random-forests)
 - [breiman (2001): random forests](https://link.springer.com/article/10.1023/A:1010933404324)
+- [lundberg & lee (2017): a unified approach to interpreting model predictions (shap)](https://arxiv.org/abs/1705.07874)

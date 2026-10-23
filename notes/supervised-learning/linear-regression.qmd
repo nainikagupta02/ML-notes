@@ -49,9 +49,9 @@ title: "linear regression"
 
 ## practical considerations
 
-- check residual plots (residuals vs. fitted values, vs. each feature) for non-linearity, heteroscedasticity, and outliers rather than relying on $r^2$ alone — see [residuals, leverage & influence](../training-evaluation/bias-variance.qmd#residuals-leverage--influence)
+- check residual plots (residuals vs. fitted values, vs. each feature) for non-linearity, heteroscedasticity, and outliers rather than relying on $r^2$ alone — see [residuals, leverage & influence](../training-evaluation/bias-variance.qmd#residuals-leverage-influence)
 - near-collinear features make $(x^\top x)^{-1}$ ill-conditioned, inflating coefficient variance even when predictions remain fine — [regularisation](../training-evaluation/regularisation.qmd) (ridge in particular) is a standard fix
-- standardise features before regularised or gradient-based fitting; it doesn't change ols coefficients' predictions but does change their relative scale and is required for the penalty terms in ridge/lasso to be meaningful, see [feature engineering](../training-evaluation/feature-engineering.qmd#scaling--transformations)
+- standardise features before regularised or gradient-based fitting; it doesn't change ols coefficients' predictions but does change their relative scale and is required for the penalty terms in ridge/lasso to be meaningful, see [feature engineering](../training-evaluation/feature-engineering.qmd#scaling-transformations)
 - $r^2$ (and adjusted $r^2$) describe fit on the data they're computed on — always evaluate on held-out data, see [train/test splits](../training-evaluation/train-test.qmd)
 
 ## image credit

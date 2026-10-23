@@ -26,7 +26,7 @@ title: "learning curves"
 ## learning curves vs validation curves
 
 - a **learning curve** varies the amount of training data, with the model/hyperparameters held fixed — it diagnoses whether to get more data
-- a **validation curve** (e.g. error vs. $\lambda$ in [regularisation](regularisation.qmd#choosing-lambda--reading-the-graphs), or vs. tree depth, or vs. $k$) varies a hyperparameter, with the training-set size held fixed — it diagnoses which hyperparameter setting generalises best
+- a **validation curve** (e.g. error vs. $\lambda$ in [regularisation](regularisation.qmd#choosing-lambda-reading-the-graphs), or vs. tree depth, or vs. $k$) varies a hyperparameter, with the training-set size held fixed — it diagnoses which hyperparameter setting generalises best
 - both compare training against validation/held-out performance; the x-axis is the key difference between them
 
 ## practical considerations

@@ -27,7 +27,7 @@ title: "decision trees"
 ## stopping criteria
 
 - common stopping rules: a maximum depth, a minimum number of samples per leaf, a minimum information gain to justify a split, or simply splitting until every leaf is pure
-- without a stopping rule, a tree keeps splitting until every leaf holds a single point — a textbook case of [overfitting / high variance](../training-evaluation/bias-variance.qmd#recognising-underfitting--overfitting): perfect training accuracy, unstable predictions on new data
+- without a stopping rule, a tree keeps splitting until every leaf holds a single point — a textbook case of [overfitting / high variance](../training-evaluation/bias-variance.qmd#recognising-underfitting-overfitting): perfect training accuracy, unstable predictions on new data
 
 ## practical considerations
 

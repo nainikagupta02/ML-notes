@@ -55,7 +55,7 @@ title: "supervised learning overview"
 
 :::
 
-- this is also where each family's sensitivities come from: trajectories built from weighted sums or distances (linear models, svms, knn, gaussian processes) care about feature scale, see [scaling & transformations](../training-evaluation/feature-engineering.qmd#scaling--transformations); trajectories built from per-feature threshold comparisons (trees and their ensembles) don't
+- this is also where each family's sensitivities come from: trajectories built from weighted sums or distances (linear models, svms, knn, gaussian processes) care about feature scale, see [scaling & transformations](../training-evaluation/feature-engineering.qmd#scaling-transformations); trajectories built from per-feature threshold comparisons (trees and their ensembles) don't
 
 ## a practical workflow
 

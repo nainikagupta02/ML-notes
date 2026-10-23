@@ -57,7 +57,7 @@ title: "gradient boosting"
 
 - boosted trees are more sensitive to their hyperparameters than random forests — learning rate, tree depth, and number of trees interact, so tune them together rather than independently, see [hyperparameter tuning](../training-evaluation/hyperparameter-tuning.qmd)
 - use early stopping against a validation set, not the test set — exactly like any other hyperparameter choice, see [train/test splits](../training-evaluation/train-test.qmd)
-- as with random forests, feature importance is available but impurity-based importance can be biased toward high-cardinality features
+- as with random forests, feature importance is available but impurity-based importance can be biased toward high-cardinality features; [shap](random-forests.qmd#practical-considerations) works the same way here and is the more common choice for explaining individual predictions from a boosted model, including a fast, exact implementation for tree ensembles specifically ([treeshap](https://shap.readthedocs.io/en/latest/generated/shap.TreeExplainer.html))
 
 ## references
 
